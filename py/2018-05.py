@@ -4,9 +4,12 @@ import re
 class AdventOfCode:
     def __init__(self, filename):
         with open(filename) as f:
-            self.input = f.read()
+            self.original = f.read().strip()
 
-    def reduce(self, polymer):
+        self.reduced = None
+
+    @staticmethod
+    def reduce(polymer):
         reduced = polymer
         while True:
             before = len(reduced)
@@ -19,13 +22,15 @@ class AdventOfCode:
                 return reduced
 
     def part1(self):
-        return len(self.reduce(self.input.strip()))
+        self.reduced = self.reduce(self.original)
+
+        return len(self.reduced)
 
     def part2(self):
         min_length = float('inf')
 
         for char in 'abcdefghijklmnopqrstuvwxyz':
-            polymer = self.input.strip()
+            polymer = self.reduced
             polymer = polymer.replace(f'{char}', '')
             polymer = polymer.replace(f'{char.upper()}', '')
 
