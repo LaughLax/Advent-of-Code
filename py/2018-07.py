@@ -42,6 +42,7 @@ class AdventOfCode:
     def part2(self):
         for step in self.steps.values():
             step.done = False
+            step.time_completed = 0
 
         steps_to_process = {self.first_step}
         ready_step_names = []
@@ -52,8 +53,7 @@ class AdventOfCode:
             for s in steps_to_process:
 
                 if (update_ready_steps and
-                        (not s.pre_reqs
-                         or all([i.done for i in s.pre_reqs]))
+                        all([i.done for i in s.pre_reqs])
                         and s.name not in ready_step_names):
                     bisect.insort(ready_step_names, s.name)
 
