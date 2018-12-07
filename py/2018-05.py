@@ -1,6 +1,3 @@
-import re
-
-
 class AdventOfCode:
     def __init__(self, filename):
         with open(filename) as f:
