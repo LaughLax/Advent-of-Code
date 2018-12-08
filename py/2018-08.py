@@ -4,7 +4,7 @@ class AdventOfCode:
         with open(filename) as f:
             self.input = list(map(int, f.read().split()))
 
-        self.tree_top_node = TreeNode(self.input)
+        self.tree_top_node = TreeNode(self.input, 0)
 
     def part1(self):
         return self.tree_top_node.metadata_sum()
@@ -15,17 +15,23 @@ class AdventOfCode:
 
 class TreeNode:
 
-    def __init__(self, input_list):
-        num_children = input_list.pop(0)
-        num_metadata = input_list.pop(0)
+    def __init__(self, input_list, pos):
+        num_children = input_list[pos]
+        num_metadata = input_list[pos+1]
+        pos += 2
 
         self.children = []
         for i in range(num_children):
-            self.children.append(TreeNode(input_list))
+            self.children.append(TreeNode(input_list, pos))
+            pos += self.children[i].length()
 
         self.metadata = []
         for i in range(num_metadata):
-            self.metadata.append(input_list.pop(0))
+            self.metadata.append(input_list[pos])
+            pos += 1
+
+    def length(self):
+        return 2 + len(self.metadata) + sum(c.length() for c in self.children)
 
     def metadata_sum(self):
         return sum(self.metadata) + sum([c.metadata_sum() for c in self.children])
