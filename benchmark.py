@@ -42,25 +42,27 @@ for line in lines:
 for year in sorted(to_run,reverse=True):
     with open(output_file,'a') as f:
         f.write(f'## Year {year}\n')
+        f.write('|Day|Setup|Part 1|Part 2| Total|\n')
+        f.write('|:---|---:|---:|---:|---:|\n')
 
     for day in sorted(to_run[year], reverse=True):
         with open(output_file,'a') as f:
-            f.write(f'### Day {day:2}\n```\n')
+            f.write(f'|{day:2}|')
 
         t0 = time_line('setup(year, day)')
         day_obj = setup(year, day)
         with open(output_file,'a') as f:
-            print(f"Setup:  {t0:8.3f}ms", file=f)
+            f.write(f"`{t0:.3f} ms`|")
 
         t1 = time_line('day_obj.part1()')
         p1 = day_obj.part1()
         with open(output_file,'a') as f:
-            print(f"Part 1: {t1:8.3f}ms", file=f)
+            f.write(f"`{t1:.3f} ms`|")
 
         t2 = time_line('day_obj.part2()')
         p2 = day_obj.part2()
         with open(output_file,'a') as f:
-            print(f"Part 2: {t2:8.3f}ms", file=f)
+            f.write(f"`{t2:.3f} ms`|")
 
-            print(f"Total:  {(t0+t1+t2):8.3f}ms\n```\n", file=f)
+            f.write(f"`{(t0+t1+t2):.3f} ms`|\n")
 

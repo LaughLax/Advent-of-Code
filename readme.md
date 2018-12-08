@@ -7,116 +7,22 @@ Info about Advent of Code goes here
 Info about my benchmarks goes here
 
 ## Year 2018
-### Day  8
-```
-Setup:    12.055ms
-Part 1:    1.250ms
-Part 2:    0.571ms
-Total:    13.876ms
-```
-
-### Day  7
-```
-Setup:     0.332ms
-Part 1:    1.442ms
-Part 2:    1.758ms
-Total:     3.531ms
-```
-
-### Day  6
-```
-Setup:     0.201ms
-Part 1: 1491.570ms
-Part 2: 2093.124ms
-Total:  3584.894ms
-```
-
-### Day  5
-```
-Setup:     0.309ms
-Part 1:  103.327ms
-Part 2:  402.522ms
-Total:   506.158ms
-```
-
-### Day  4
-```
-Setup:     4.848ms
-Part 1:    0.006ms
-Part 2:    0.009ms
-Total:     4.864ms
-```
-
-### Day  3
-```
-Setup:     5.185ms
-Part 1:  988.749ms
-Part 2:  640.260ms
-Total:  1634.194ms
-```
-
-### Day  2
-```
-Setup:     0.180ms
-Part 1:    2.952ms
-Part 2:    8.913ms
-Total:    12.045ms
-```
-
-### Day  1
-```
-Setup:     0.385ms
-Part 1:    0.014ms
-Part 2:   27.138ms
-Total:    27.537ms
-```
-
+|Day|Setup|Part 1|Part 2| Total|
+|:---|---:|---:|---:|---:|
+| 8|`12.330 ms`|`1.230 ms`|`0.594 ms`|`14.155 ms`|
+| 7|`0.346 ms`|`1.500 ms`|`2.013 ms`|`3.860 ms`|
+| 6|`0.341 ms`|`1732.675 ms`|`2400.384 ms`|`4133.399 ms`|
+| 5|`0.281 ms`|`140.846 ms`|`413.556 ms`|`554.683 ms`|
+| 4|`4.740 ms`|`0.007 ms`|`0.010 ms`|`4.757 ms`|
+| 3|`4.662 ms`|`998.876 ms`|`665.904 ms`|`1669.442 ms`|
+| 2|`0.162 ms`|`3.053 ms`|`9.321 ms`|`12.536 ms`|
+| 1|`0.403 ms`|`0.015 ms`|`28.026 ms`|`28.444 ms`|
 ## Year 2017
-### Day  8
-```
-Setup:     2.577ms
-Part 1:    0.503ms
-Part 2:    0.668ms
-Total:     3.749ms
-```
-
-### Day  7
-```
-Setup:     3.594ms
-Part 1:    0.609ms
-Part 2:    0.018ms
-Total:     4.220ms
-```
-
-### Day  4
-```
-Setup:     0.311ms
-Part 1:    1.339ms
-Part 2:    5.918ms
-Total:     7.568ms
-```
-
-### Day  3
-```
-Setup:     0.116ms
-Part 1:    0.002ms
-Part 2:    0.318ms
-Total:     0.435ms
-```
-
-### Day  2
-```
-Setup:     0.197ms
-Part 1:    0.021ms
-Part 2:    0.579ms
-Total:     0.797ms
-```
-
-### Day  1
-```
-Setup:     0.531ms
-Part 1:    0.331ms
-Part 2:    0.334ms
-Total:     1.196ms
-```
-
+|Day|Setup|Part 1|Part 2| Total|
+|:---|---:|---:|---:|---:|
+| 8|`2.325 ms`|`0.507 ms`|`0.694 ms`|`3.527 ms`|
+| 7|`3.398 ms`|`0.634 ms`|`0.017 ms`|`4.049 ms`|
+| 4|`0.289 ms`|`1.414 ms`|`5.968 ms`|`7.671 ms`|
+| 3|`0.118 ms`|`0.002 ms`|`0.319 ms`|`0.439 ms`|
+| 2|`0.204 ms`|`0.021 ms`|`0.575 ms`|`0.800 ms`|
+| 1|`0.535 ms`|`0.346 ms`|`0.349 ms`|`1.230 ms`|
