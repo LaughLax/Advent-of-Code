@@ -24,23 +24,43 @@ def time_line(line):
 
 with open('days_to_run.txt') as f:
     lines = f.read().splitlines()
-    for line in lines:
-        line = line.split()
-        year = int(line[0])
-        day = int(line[1])
 
-        print(f'{year} Advent of Code - Day {day:2}')
+output_file = 'readme.md'
+
+with open(output_file,'w') as f:
+    f.write('# Advent of Code\n\n')
+    f.write('Info about Advent of Code goes here\n\n')
+    f.write('# Benchmarking Results\n\n')
+    f.write('Info about my benchmarks goes here\n\n')
+
+to_run = {}
+
+for line in lines:
+    line = line.split()
+    to_run.setdefault(int(line[0]), set()).add(int(line[1]))
+
+for year in sorted(to_run,reverse=True):
+    with open(output_file,'a') as f:
+        f.write(f'## Year {year}\n')
+
+    for day in sorted(to_run[year], reverse=True):
+        with open(output_file,'a') as f:
+            f.write(f'### Day {day:2}\n```\n')
 
         t0 = time_line('setup(year, day)')
         day_obj = setup(year, day)
-        print(f"Setup:  {t0:.9f}ms")
+        with open(output_file,'a') as f:
+            print(f"Setup:  {t0:8.3f}ms", file=f)
 
         t1 = time_line('day_obj.part1()')
         p1 = day_obj.part1()
-        print(f"Part 1: {t1:.9f}ms")
+        with open(output_file,'a') as f:
+            print(f"Part 1: {t1:8.3f}ms", file=f)
 
         t2 = time_line('day_obj.part2()')
         p2 = day_obj.part2()
-        print(f"Part 2: {t2:.9f}ms")
+        with open(output_file,'a') as f:
+            print(f"Part 2: {t2:8.3f}ms", file=f)
 
-        print(f"Total:  {(t0+t1+t2):.9f}ms\n")
+            print(f"Total:  {(t0+t1+t2):8.3f}ms\n```\n", file=f)
+

@@ -34,7 +34,7 @@ with open('days_to_run.txt') as f:
 
         print(f"Part 1: {p1}")
         print(f"Part 2: {p2}\n")
-        print(f"Setup:  {t0:.9f}ms")
-        print(f"Part 1: {t1:.9f}ms")
-        print(f"Part 2: {t2:.9f}ms")
-        print(f"Total:  {t:.9f}ms\n")
+        print(f"Setup:  {t0:8.3f}ms")
+        print(f"Part 1: {t1:8.3f}ms")
+        print(f"Part 2: {t2:8.3f}ms")
+        print(f"Total:  {t:8.3f}ms\n")
