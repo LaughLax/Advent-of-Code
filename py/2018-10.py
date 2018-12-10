@@ -14,13 +14,7 @@ class AdventOfCode:
             self.point_map.add_point(Point(x, y, dx, dy))
 
     def part1(self):
-        t = 0
-        while True:
-            bounds = self.point_map.bounding_box(t)
-            if (bounds[2] - bounds[0]) <= 100 and (bounds[3] - bounds[1]) <= 12:
-                break
-            t += 1
-
+        t = self.point_map.min_total_distance()
         self.point_map.print(t)
 
         return t
@@ -36,6 +30,17 @@ class PointSet:
 
     def add_point(self, point):
         self.points.append(point)
+
+    def min_total_distance(self):
+        base = self.points[0]
+        a = [pt.dx - base.dx for pt in self.points] + [pt.dy - base.dy for pt in self.points]
+        b = [pt.x - base.x for pt in self.points] + [pt.y - base.y for pt in self.points]
+
+        a_transpose_a = sum(i**2 for i in a)
+        a_transpose_b = sum(a[i]*b[i] for i in range(len(a)))
+        t = - a_transpose_b / a_transpose_a
+
+        return int(t)
 
     def bounding_box(self, t):
         return (
