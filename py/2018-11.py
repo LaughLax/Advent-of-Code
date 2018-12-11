@@ -8,6 +8,7 @@ class AdventOfCode:
             self.serial = int(f.read())
 
         self.grid = {}
+        self.sums = {}
 
     def get_power(self, x, y):
         return int( ( ( (x+10)*y + self.serial) * (x+10) % 1000) / 100) - 5
@@ -16,6 +17,17 @@ class AdventOfCode:
         for x in range(1, 301):
             for y in range(1, 301):
                 self.grid[(x, y)] = self.get_power(x, y)
+
+    def build_sums(self):
+        self.sums = copy.copy(self.grid)
+        for x in range(1, 301):
+            for y in range(1, 301):
+                if (x-1, y) in self.sums and (x, y-1) in self.sums:
+                    self.sums[(x, y)] -= self.sums[(x-1, y-1)]
+                if (x-1, y) in self.sums:
+                    self.sums[(x, y)] += self.sums[(x-1, y)]
+                if (x, y-1) in self.sums:
+                    self.sums[(x, y)] += self.sums[(x, y-1)]
 
     def integrate_grid(self, size):
         new_grid = {}
@@ -39,34 +51,34 @@ class AdventOfCode:
 
         max_key = None
         max_val = -float('inf')
-        for key, val in self.grid.items():
-            if val > max_val:
-                max_val = val
-                max_key = key
-        print(max_key)
-
-        max_key = None
-        max_val = -float('inf')
         for key, val in integrated.items():
             if val > max_val:
                 max_val = val
                 max_key = key
-        print(max_key)
         return max_key
 
     def part2(self):
-        grid = Grid(self.grid, 300, 300)
+        self.build_sums()
 
-        print(grid.max_loc)
-        grid.expand()
-        grid.expand()
-        print(grid.max_loc)
-        
-        while grid.size < 300:
-            print(grid.size)
-            grid.expand()
+        max_key = None
+        max_val = -float('inf')
 
-        return grid.max_loc
+        for size in range(1, 301):
+            for x in range(size, 301):
+                for y in range(size, 301):
+                    power = self.sums[(x, y)]
+                    if (x-size, y) in self.sums:
+                        power -= self.sums[(x-size, y)]
+                    if (x, y-size) in self.sums:
+                        power -= self.sums[(x, y-size)]
+                    if (x-size, y-size) in self.sums:
+                        power += self.sums[(x-size, y-size)]
+
+                    if power > max_val:
+                        max_val = power
+                        max_key = (x-size+1, y-size+1, size)
+
+        return max_key
 
 
 class Grid:
