@@ -6,9 +6,8 @@ class AdventOfCode:
 
         self.input = int(self.input_raw)
 
-        self.recipes = [3, 7]
-
     def part1(self):
+        self.recipes = [3, 7]
         elf_1 = 0
         elf_2 = 1
 

@@ -11,8 +11,6 @@ class AdventOfCode:
     def __init__(self, filename):
         with open(filename) as f:
             self.input = f.read().splitlines()
-
-        self.grid = self.make_grid()
         
     def make_grid(self):
         grid = Grid(len(self.input[0]), len(self.input))
@@ -44,6 +42,8 @@ class AdventOfCode:
                         
 
     def part1(self):
+        self.grid = self.make_grid()
+        
         while not self.grid.wreck_location:
             self.grid.process_step()
         return self.grid.wreck_location
