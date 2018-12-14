@@ -30,8 +30,19 @@ output_file = 'readme.md'
 with open(output_file,'w') as f:
     f.write('# Advent of Code\n\n')
     f.write('Info about Advent of Code goes here\n\n')
+    
+    f.write('# Benchmarking Process\n\n')
+    f.write('To benchmark code, execution is split into 3 sections: setup, part 1 solution-finding, and part 2 solution-finding. ')
+    f.write('For each section, code is first timed for one execution to get an estimate of its run-time. ')
+    f.write('That estimate is used to decide how many times to repeat, aiming for about 10 seconds of work per section. ')
+    f.write('Each section runs a minimum of 20 times and a maximum of 10,000.\n\n')
+    f.write('Benchmarks are taken on one of the following 2 computers.\n\n')
+    f.write('|Computer|Python Version|Processor|Memory|\n')
+    f.write('|---:|---|---|---|\n')
+    f.write('|1|3.7|To be filled|To be filled|\n')
+    f.write('|2|3.6.6|i7-7600U|16 GB|\n\n')
+    
     f.write('# Benchmarking Results\n\n')
-    f.write('Info about my benchmarks goes here\n\n')
 
 to_run = {}
 
@@ -46,21 +57,26 @@ for year in sorted(to_run,reverse=True):
         f.write('|:---|---:|---:|---:|---:|\n')
 
     for day in sorted(to_run[year], reverse=True):
+        print(f'{year} Advent of Code - Day {day:2}\n')
         with open(output_file,'a') as f:
             f.write(f'|{day:2}|')
 
         t0 = time_line('setup(year, day)')
         day_obj = setup(year, day)
+        print(f"Setup:  {t0:9.3f}ms")
         with open(output_file,'a') as f:
             f.write(f"`{t0:.3f} ms`|")
 
         t1 = time_line('day_obj.part1()')
         p1 = day_obj.part1()
+        print(f"Part 1: {t1:9.3f}ms")
         with open(output_file,'a') as f:
             f.write(f"`{t1:.3f} ms`|")
 
         t2 = time_line('day_obj.part2()')
         p2 = day_obj.part2()
+        print(f"Part 2: {t2:9.3f}ms")
+        print(f"Total:  {(t0+t1+t2):9.3f}ms\n")
         with open(output_file,'a') as f:
             f.write(f"`{t2:.3f} ms`|")
 
