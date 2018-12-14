@@ -33,22 +33,29 @@ class AdventOfCode:
         elf_2 = 1
 
         check = [int(d) for d in self.input_raw]
+        check_pos = 0
         length = len(self.input_raw)
 
         while True:
             new_val = self.recipes[elf_1] + self.recipes[elf_2]
 
             if new_val >= 10:
+                new_val = new_val % 10
                 self.recipes.append(1)
-                if self.recipes[-length:] == check:
+                if check[check_pos] == 1:
+                    check_pos += 1
+                    if check_pos == length:
+                        break
+                else:
+                    check_pos = 0
+            
+            self.recipes.append(new_val)
+            if check[check_pos] == new_val:
+                check_pos += 1
+                if check_pos == length:
                     break
-                
-                self.recipes.append(new_val % 10)
             else:
-                self.recipes.append(new_val)
-
-            if self.recipes[-length:] == check:
-                break
+                check_pos = 0
 
             elf_1 = (elf_1 + self.recipes[elf_1] + 1) % len(self.recipes)
             elf_2 = (elf_2 + self.recipes[elf_2] + 1) % len(self.recipes)
