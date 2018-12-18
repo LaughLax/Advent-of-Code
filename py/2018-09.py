@@ -1,3 +1,6 @@
+import gc
+
+
 class AdventOfCode:
 
     def __init__(self, filename):
@@ -12,6 +15,10 @@ class AdventOfCode:
         self.num_marbles = int(line[-2])
 
     def part1(self):
+        self.current_marble = Marble(0, None)
+        self.current_player = 0
+        self.scores = [0] * self.num_players
+
         for i in range(1, self.num_marbles + 1):
             if (i % 23) == 0:
                 for j in range(6):
@@ -23,8 +30,13 @@ class AdventOfCode:
         return max(self.scores)
 
     def part2(self):
+        self.current_marble = Marble(0, None)
+        self.current_player = 0
+        self.scores = [0] * self.num_players
+        gc.collect()
+
         new_max = self.num_marbles * 100
-        for i in range(self.num_marbles + 1, new_max + 1):
+        for i in range(1, new_max + 1):
             if (i % 23) == 0:
                 for j in range(6):
                     self.current_marble = self.current_marble.ccw
@@ -32,6 +44,7 @@ class AdventOfCode:
             else:
                 self.current_marble = Marble(i, self.current_marble.cw)
             self.current_player = (self.current_player + 1) % self.num_players
+
         return max(self.scores)
 
 
