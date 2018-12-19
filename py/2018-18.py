@@ -18,12 +18,9 @@ class AdventOfCode:
         self.grid = Grid(self.input)
 
         with open('yard_data.txt', 'w') as f:
-            pass
-        for i in range(1000000000):
-            with open('yard_data.txt', 'a') as f:
+            for i in range(2000):
                 print(f'{self.grid.count_trees()}\t{self.grid.count_yards()}', file=f)
-
-            self.grid.tick()
+                self.grid.tick()
 
         return self.grid.count_trees() * self.grid.count_yards()
 
