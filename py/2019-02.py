@@ -22,6 +22,7 @@ class AdventOfCode:
         return True
 
     def part1(self):
+        self.state = self.init_cond.copy()
         self.state[1] = 12
         self.state[2] = 2
 

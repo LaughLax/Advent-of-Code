@@ -18,5 +18,6 @@ Benchmarks are taken on one of the following 2 computers.
 ## Year 2019
 |Day|Setup|Part 1|Part 2| Total|
 |:---|---:|---:|---:|---:|
-| 2|`0.186 ms`|`0.053 ms`|`547.492 ms`|`547.731 ms`|
-| 1|`0.171 ms`|`0.038 ms`|`0.484 ms`|`0.693 ms`|
+| 3|`0.254 ms`|`105.368 ms`|`33.142 ms`|`138.764 ms`|
+| 2|`0.174 ms`|`0.027 ms`|`138.645 ms`|`138.846 ms`|
+| 1|`0.169 ms`|`0.038 ms`|`0.484 ms`|`0.690 ms`|
