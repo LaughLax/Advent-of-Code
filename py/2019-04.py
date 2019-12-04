@@ -10,13 +10,12 @@ class AdventOfCode:
 
         for i in range(self.input[0], self.input[1] + 1):
             s = str(i)
-            doubles = any([dub in s for dub in dubs])
-            incr = (i // 100000) \
-                    <= (i // 10000 - 10*(i // 100000)) \
-                    <= (i // 1000 - 10*(i // 10000)) \
-                    <= (i // 100 - 10*(i // 1000)) \
-                    <= (i // 10 - 10*(i // 100)) \
-                    <= (i // 1 - 10*(i // 10))
+            doubles = False
+            for dub in dubs:
+                if dub in s:
+                    doubles = True
+                    break
+            incr = s[0] <= s[1] <= s[2] <= s[3] <= s[4] <= s[5]
             if doubles and incr:
                 count += 1
 
@@ -32,13 +31,12 @@ class AdventOfCode:
         for i in range(self.input[0], self.input[1] + 1):
             s = str(i)
 
-            dub_only = any([dubs[n] in s and not trips[n] in s for n in range(10)])
-            incr = (i // 100000) \
-                    <= (i // 10000 - 10*(i // 100000)) \
-                    <= (i // 1000 - 10*(i // 10000)) \
-                    <= (i // 100 - 10*(i // 1000)) \
-                    <= (i // 10 - 10*(i // 100)) \
-                    <= (i // 1 - 10*(i // 10))
+            dub_only = False
+            for n in range(10):
+                if dubs[n] in s and not trips[n] in s:
+                    dub_only = True
+                    break
+            incr = s[0] <= s[1] <= s[2] <= s[3] <= s[4] <= s[5]
 
             if dub_only and incr:
                 count += 1
