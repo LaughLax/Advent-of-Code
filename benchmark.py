@@ -50,6 +50,7 @@ for line in lines:
     line = line.split()
     to_run.setdefault(int(line[0]), set()).add(int(line[1]))
 
+t_total = 0
 for year in sorted(to_run,reverse=True):
     with open(output_file,'a') as f:
         f.write(f'## Year {year}\n')
@@ -77,8 +78,10 @@ for year in sorted(to_run,reverse=True):
         p2 = day_obj.part2()
         print(f"Part 2: {t2:9.3f}ms")
         print(f"Total:  {(t0+t1+t2):9.3f}ms\n")
+        t_total += t0 + t1 + t2
         with open(output_file,'a') as f:
             f.write(f"`{t2:.3f} ms`|")
 
             f.write(f"`{(t0+t1+t2):.3f} ms`|\n")
 
+print(f'Total (benchmarked) time: {(t_total/1000):.3f}s')

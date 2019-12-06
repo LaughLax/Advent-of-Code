@@ -28,7 +28,7 @@ class AdventOfCode:
             8: 2,
             99: 0,
         }
-        self.param_mode = 0
+
         self.pos = 0
         self.auto_input = None
         self.outputs = []

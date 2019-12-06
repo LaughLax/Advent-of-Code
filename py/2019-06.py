@@ -5,6 +5,9 @@ class TreeNode:
         self.children = []
         self.root = self
 
+        self.d_o = None
+        self.i_o = None
+
     def add_child(self, child):
         child.parent = self
         child.set_root(self.root)
@@ -22,10 +25,14 @@ class TreeNode:
             return self
 
     def count_direct_orbits(self):
-        return len(self.children) + sum([child.count_direct_orbits() for child in self.children])
+        if self.d_o is None:
+            self.d_o = len(self.children) + sum([child.count_direct_orbits() for child in self.children])
+        return self.d_o
 
     def count_indirect_orbits(self):
-        return sum([child.count_direct_orbits() for child in self.children]) + sum([child.count_indirect_orbits() for child in self.children])
+        if self.i_o is None:
+            self.i_o = sum([child.count_direct_orbits() for child in self.children]) + sum([child.count_indirect_orbits() for child in self.children])
+        return self.i_o
 
 
 class AdventOfCode:
@@ -46,46 +53,21 @@ class AdventOfCode:
     def part1(self):
         root = next(iter(self.nodes.values())).root
 
-        # print(root.name)
-        # print([c.name for c in root.children])
         return root.count_direct_orbits() + root.count_indirect_orbits()
 
     def part2(self):
         you = self.nodes['YOU']
         santa = self.nodes['SAN']
 
-        searched = []
-        this_round = [you]
-        next_round = []
-        round = 0
+        youpath = set()
+        sanpath = set()
+        temp = you
+        while temp.parent is not None:
+            youpath.add(temp)
+            temp = temp.parent
+        temp = santa
+        while temp.parent is not None:
+            sanpath.add(temp)
+            temp = temp.parent
 
-        found = False
-        while not found:
-            round += 1
-            # print(f'\nRound {round}!')
-            # print([str(node) for node in this_round])
-
-            while len(this_round) > 0:
-                node = this_round.pop()
-                if node in searched:
-                    continue
-                searched.append(node)
-                if node.parent is not None:
-                    # print(node.parent)
-                    if santa is node.parent:
-                        found = True
-                    elif node.parent not in searched:
-                        next_round.append(node.parent)
-                for child in node.children:
-                    # print(child)
-                    if santa is child:
-                        found = True
-                    elif child not in searched:
-                        next_round.append(child)
-                if found:
-                    break
-
-            this_round = next_round
-            next_round = []
-
-        return round - 2
+        return len(youpath.symmetric_difference(sanpath)) - 2
