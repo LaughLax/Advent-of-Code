@@ -75,6 +75,7 @@ class IntCode:
         self.input_pos = 0
         self.outputs = []
         self.halted = False
+        self.auto_inputs = None
 
 
 class AdventOfCode:

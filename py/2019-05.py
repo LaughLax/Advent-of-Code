@@ -67,6 +67,7 @@ class AdventOfCode:
 
     def part1(self):
         self.state = self.init_cond.copy()
+        self.pos = 0
         self.auto_input = 1
 
         run = True

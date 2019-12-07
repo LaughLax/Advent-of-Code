@@ -51,6 +51,11 @@ class AdventOfCode:
             self.nodes[n[0]].add_child(self.nodes[n[1]])
 
     def part1(self):
+        # Reset orbit count cache, for fair benchmarking
+        for node in self.nodes:
+            self.nodes[node].d_o = None
+            self.nodes[node].i_o = None
+
         root = next(iter(self.nodes.values())).root
 
         return root.count_direct_orbits() + root.count_indirect_orbits()
