@@ -53,25 +53,21 @@ class IntCode:
         full_op = self.get_addr(self.pos)
         op = full_op % 100
         params = [self.get_addr(self.pos+i+1) for i in range(self.op_param_count[op])]
-        for i in range(self.op_param_modal[op]):
-            mode = (full_op // int(10**(i+2))) % 10
-            if mode == 0:
-                params[i] = self.get_addr(params[i])
+        for i in range(self.op_param_count[op]):
+            mode = (full_op // [100, 1000, 10000][i]) % 10
+            if i < self.op_param_modal[op]:
+                if mode == 0:
+                    params[i] = self.get_addr(params[i])
+                elif mode == 2:
+                    params[i] = self.get_addr(self.relative_base + params[i])
             elif mode == 2:
-                params[i] = self.get_addr(self.relative_base + params[i])
+                params[i] = self.relative_base + params[i]
 
         if op == 1:
-            if full_op // 10000 == 2:
-                params[2] = self.relative_base + params[2]
             self.set_addr(params[2], params[0] + params[1])
         elif op == 2:
-            if full_op // 10000 == 2:
-                params[2] = self.relative_base + params[2]
             self.set_addr(params[2], params[0] * params[1])
         elif op == 3:
-            # dest = self.relative_base + params[0] if full_op // 100 == 2 else params[0]
-            if full_op // 100 == 2:
-                params[0] = self.relative_base + params[0]
             self.set_addr(params[0], self.auto_inputs[self.input_pos])
             self.input_pos += 1
         elif op == 4:
@@ -83,12 +79,8 @@ class IntCode:
             if params[0] == 0:
                 self.pos = params[1] - 3
         elif op == 7:
-            if full_op // 10000 == 2:
-                params[2] = self.relative_base + params[2]
             self.set_addr(params[2], 1 if params[0] < params[1] else 0)
         elif op == 8:
-            if full_op // 10000 == 2:
-                params[2] = self.relative_base + params[2]
             self.set_addr(params[2], 1 if params[0] == params[1] else 0)
         elif op == 9:
             self.relative_base += params[0]
@@ -102,11 +94,15 @@ class IntCode:
 
     def reset_state(self):
         self.state = self.init_cond.copy()
+
         self.pos = 0
         self.input_pos = 0
-        self.outputs = []
-        self.halted = False
+        self.relative_base = 0
+
         self.auto_inputs = None
+        self.outputs = []
+
+        self.halted = False
 
 
 class AdventOfCode:

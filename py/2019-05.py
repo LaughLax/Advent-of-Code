@@ -38,7 +38,7 @@ class AdventOfCode:
         op = full_op % 100
         params = [self.state[self.pos+i+1] for i in range(self.op_param_count[op])]
         for i in range(self.op_param_modal[op]):
-            params[i] = params[i] if (full_op // int(10**(i+2))) % 10 == 1 else self.state[params[i]]
+            params[i] = params[i] if (full_op // [100, 1000, 10000][i]) % 10 == 1 else self.state[params[i]]
 
         if op == 1:
             self.state[params[2]] = params[0] + params[1]
