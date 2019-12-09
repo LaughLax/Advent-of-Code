@@ -40,8 +40,8 @@ class IntCode:
         self.halted = False
 
     def get_addr(self, addr):
-        while addr >= len(self.state) - 1:
-            self.state.append(0)
+        if addr >= len(self.state) - 1:
+            return 0
         return self.state[addr]
 
     def set_addr(self, addr, val):
@@ -50,9 +50,9 @@ class IntCode:
         self.state[addr] = val
 
     def run_op(self):
-        full_op = self.get_addr(self.pos)
+        full_op = self.state[self.pos]
         op = full_op % 100
-        params = [self.get_addr(self.pos+i+1) for i in range(self.op_param_count[op])]
+        params = self.state[self.pos+1:self.pos+self.op_param_count[op]+1]
         for i in range(self.op_param_count[op]):
             mode = (full_op // [100, 1000, 10000][i]) % 10
             if i < self.op_param_modal[op]:
