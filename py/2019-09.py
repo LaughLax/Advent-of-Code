@@ -37,6 +37,7 @@ class IntCode:
         self.auto_inputs = None
         self.outputs = []
 
+        self.cmd_count = 0
         self.halted = False
 
     def get_addr(self, addr):
@@ -62,6 +63,8 @@ class IntCode:
                     params[i] = self.get_addr(self.relative_base + params[i])
             elif mode == 2:
                 params[i] = self.relative_base + params[i]
+
+        self.cmd_count += 1
 
         if op == 1:
             self.set_addr(params[2], params[0] + params[1])
@@ -102,6 +105,7 @@ class IntCode:
         self.auto_inputs = None
         self.outputs = []
 
+        self.cmd_count = 0
         self.halted = False
 
 
