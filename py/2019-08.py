@@ -11,9 +11,7 @@ class AdventOfCode:
         self.input_ints = list(map(int,[char for char in self.input]))
 
     def part1(self):
-        width = 25
-        height = 6
-        size = width * height
+        size = 25 * 6
         layers = int(len(self.input) / size)
 
         min_0 = 1e20
@@ -28,9 +26,7 @@ class AdventOfCode:
         return result
 
     def part2(self):
-        width = 25
-        height = 6
-        size = width * height
+        size = 25 * 6
         layers = int(len(self.input) / size)
 
         im = np.zeros((6,25))
