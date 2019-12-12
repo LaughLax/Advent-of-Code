@@ -57,9 +57,6 @@ class AdventOfCode:
         moons_pos = self.moons_pos_i.copy()
         moons_vel = self.moons_vel_i.copy()
 
-        hash_px = hash(bytes(moons_pos[:, 0]))
-        hash_py = hash(bytes(moons_pos[:, 1]))
-        hash_pz = hash(bytes(moons_pos[:, 2]))
         hash_vx = hash(bytes(moons_vel[:, 0]))
         hash_vy = hash(bytes(moons_vel[:, 1]))
         hash_vz = hash(bytes(moons_vel[:, 2]))
@@ -88,21 +85,15 @@ class AdventOfCode:
             # Assumed and hoped that the loop begins at t=0. Turns out that assumption was good!
             # There used to be code for storing historical states. It's gone now.
             if x_rep is None and \
-                    hash(bytes(moons_pos[:, 0])) == hash_px and \
                     hash(bytes(moons_vel[:, 0])) == hash_vx and \
-                    np.array_equal(moons_pos[:, 0], self.moons_pos_i[:, 0]) and \
                     np.array_equal(moons_vel[:, 0], self.moons_vel_i[:, 0]):
                 x_rep = step
             if y_rep is None and \
-                    hash(bytes(moons_pos[:, 1])) == hash_py and \
                     hash(bytes(moons_vel[:, 1])) == hash_vy and \
-                    np.array_equal(moons_pos[:, 1], self.moons_pos_i[:, 1]) and \
                     np.array_equal(moons_vel[:, 1], self.moons_vel_i[:, 1]):
                 y_rep = step
             if z_rep is None and \
-                    hash(bytes(moons_pos[:, 2])) == hash_pz and \
                     hash(bytes(moons_vel[:, 2])) == hash_vz and \
-                    np.array_equal(moons_pos[:, 2], self.moons_pos_i[:, 2]) and \
                     np.array_equal(moons_vel[:, 2], self.moons_vel_i[:, 2]):
                 z_rep = step
 
@@ -135,5 +126,5 @@ class AdventOfCode:
         # plt.tight_layout()
         # plt.show()
 
-        return np.lcm(np.lcm(x_rep, y_rep, dtype=np.int64), z_rep, dtype=np.int64)
+        return np.lcm(np.lcm(x_rep, y_rep, dtype=np.int64), z_rep, dtype=np.int64) * 2
 
