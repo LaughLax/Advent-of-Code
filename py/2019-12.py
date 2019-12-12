@@ -21,15 +21,19 @@ class AdventOfCode:
         self.moons_vel_i = np.zeros((4,3), dtype=np.int16)
 
     def part1(self):
+        adj = np.array([[1, -1, 0, 0],
+                        [1, 0, -1, 0],
+                        [1, 0, 0, -1],
+                        [0, 1, -1, 0],
+                        [0, 1, 0, -1],
+                        [0, 0, 1, -1]])
+
         step = 0
         moons_pos = self.moons_pos_i.copy()
         moons_vel = self.moons_vel_i.copy()
         while step < 1000:
-            for a in range(4):
-                for b in range(a + 1, 4):
-                    vel_change = np.sign(moons_pos[a] - moons_pos[b])
-                    moons_vel[a] -= vel_change
-                    moons_vel[b] += vel_change
+            vel_change = -adj.T.dot(np.sign(adj.dot(moons_pos)))
+            moons_vel += vel_change
             moons_pos += moons_vel
             step += 1
 
@@ -41,6 +45,13 @@ class AdventOfCode:
         return tot_energy
 
     def part2(self):
+        adj = np.array([[1, -1, 0, 0],
+                        [1, 0, -1, 0],
+                        [1, 0, 0, -1],
+                        [0, 1, -1, 0],
+                        [0, 1, 0, -1],
+                        [0, 0, 1, -1]])
+
         step = 0
 
         moons_pos = self.moons_pos_i.copy()
@@ -59,11 +70,8 @@ class AdventOfCode:
         z_rep = None
 
         while x_rep is None or y_rep is None or z_rep is None:
-            for a in range(4):
-                for b in range(a + 1, 4):
-                    vel_change = np.sign(moons_pos[a] - moons_pos[b])
-                    moons_vel[a] -= vel_change
-                    moons_vel[b] += vel_change
+            vel_change = -adj.T.dot(np.sign(adj.dot(moons_pos)))
+            moons_vel += vel_change
             moons_pos += moons_vel
             step += 1
 
