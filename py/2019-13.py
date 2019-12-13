@@ -169,63 +169,36 @@ class AdventOfCode:
         self.machine.reset_state()
         self.machine.state[0] = 2
 
-        screen = np.zeros((24, 45))
+        bricks = set()
         score = 0
-        # turn = 0
+        ball_x = 0
+        paddle_x = 0
 
         while True:
             self.machine.run_until_input_or_halt()
 
-            for i in range(int(len(self.machine.outputs)/3)):
-                x = self.machine.outputs[i*3]
-                y = self.machine.outputs[i*3 + 1]
-                z = self.machine.outputs[i*3 + 2]
+            while len(self.machine.outputs) > 0:
+                x, y, z = self.machine.outputs[0:3]
+                self.machine.outputs = self.machine.outputs[3:]
 
-                if x >= 0:
-                    screen[y, x] = z
-                else:
+                if x < 0:
                     score = z
+                elif z == 2:
+                    bricks.add((x, y))
+                elif z == 3:
+                    paddle_x = x
+                elif z == 4:
+                    ball_x = x
 
-            self.machine.outputs = []
+                if (x, y) in bricks and z != 2:
+                    bricks.remove((x, y))
 
-            ball = None
-            paddle = None
-            bricks = False
-            # if turn % 10 == 0:
-            #     print(scores)
-            #     print(f'Score: {score}')
-            for y in range(len(screen)):
-                # line = []
-                for i, x in enumerate(screen[y]):
-                    if x == 0:
-                        pass
-                        # line.append(' ')
-                    elif x == 1:
-                        pass
-                        # line.append('W')
-                    elif x == 2:
-                        # line.append('B')
-                        bricks = True
-                    elif x == 3:
-                        # line.append('-')
-                        paddle = (i, y)
-                    elif x == 4:
-                        # line.append('o')
-                        ball = (i, y)
-                # if turn % 10 == 0:
-                #     print(''.join(line))
-
-            # plt.imshow(screen)
-            # plt.show()
-
-            if bricks:
-                if ball[0] < paddle[0]:
+            if len(bricks) > 0:
+                if ball_x < paddle_x:
                     self.machine.add_input(-1)
-                elif ball[0] > paddle[0]:
+                elif ball_x > paddle_x:
                     self.machine.add_input(1)
                 else:
                     self.machine.add_input(0)
             else:
                 return score
-
-            # turn += 1
