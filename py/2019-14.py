@@ -65,29 +65,21 @@ class AdventOfCode:
         for r in self.reactions:
             self.reactions[r].determine_height()
 
-    def part1(self):
+    def ore_required(self, fuel_amount):
         ore = 0
-        mats = {'FUEL': 1}
+        mats = {'FUEL': fuel_amount}
         while len(mats) > 0:
             searching = None
             max_height = 0
             for key in mats:
                 react = self.reactions[key]
-                good = True
-                for key2 in mats:
-                    if react.is_in_parents(key2):
-                        good = False
-                if not good:
-                    continue
-                if good and react.height > max_height:
+                if react.height > max_height:
                     max_height = react.height
                     searching = key
             amount_needed = mats[searching]
             del mats[searching]
             react = self.reactions[searching]
-            mult = 1
-            while mult * react.res_amount < amount_needed:
-                mult += 1
+            mult = np.ceil(amount_needed / react.res_amount)
             for reagent in react.inputs:
                 if reagent[0] == 'ORE':
                     ore += mult * reagent[1]
@@ -98,36 +90,28 @@ class AdventOfCode:
                         mats[reagent[0]] = mats[reagent[0]] + mult * reagent[1]
         return ore
 
+    def part1(self):
+        return self.ore_required(1)
+
     def part2(self):
         max_ore_per_fuel = 136771
-        max_ore = 1000000000000
-        min_fuel_gain = int(1000000000000 / max_ore_per_fuel)
+        max_ore = 1_000_000_000_000
+        min_fuel_gain = int(max_ore / max_ore_per_fuel)
 
-        fuel_try = min_fuel_gain
+        fuel_low = min_fuel_gain
+        ore_low = self.ore_required(fuel_low)
+
+        o_per_f = ore_low / fuel_low
+        one_tril_est = np.floor(1_000_000_000_000 / o_per_f)
+
+        fuel_high = np.floor(one_tril_est*2 - fuel_low)
+
         while True:
-            ore = 0
-            mats = {'FUEL': fuel_try}
-            while len(mats) > 0:
-                searching = None
-                max_height = 0
-                for key in mats:
-                    react = self.reactions[key]
-                    if react.height > max_height:
-                        max_height = react.height
-                        searching = key
-                amount_needed = mats[searching]
-                del mats[searching]
-                react = self.reactions[searching]
-                mult = np.ceil(amount_needed / react.res_amount)
-                for reagent in react.inputs:
-                    if reagent[0] == 'ORE':
-                        ore += mult * reagent[1]
-                    else:
-                        if reagent[0] not in mats:
-                            mats[reagent[0]] = mult * reagent[1]
-                        else:
-                            mats[reagent[0]] = mats[reagent[0]] + mult * reagent[1]
-            if ore > max_ore:
-                return fuel_try - 1
+            fuel_mid = np.ceil(fuel_high + fuel_low) / 2
+            if fuel_mid - fuel_low == 1:
+                return fuel_low
+            ore_mid = self.ore_required(fuel_mid)
+            if ore_mid > max_ore:
+                fuel_high = fuel_mid
             else:
-                fuel_try += 1
+                fuel_low = fuel_mid
