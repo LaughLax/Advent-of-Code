@@ -148,6 +148,8 @@ class IntCode:
 
         self.cmd_count = 0
         self.halted = False
+        self.awaiting_input = False
+        self.input_op = None
 
 
 class AdventOfCode:
@@ -207,21 +209,61 @@ class AdventOfCode:
             chars.append(this_row)
             print(''.join(this_row))
 
+    def find_maze_length(self):
+        grid = self.grid.copy()
+
+        solved = False
+        possible = set()
+        confirmed = set()
+        confirmed.add((0, 0))
+        for key in grid:
+            if grid[key] == 1:
+                possible.add(key)
+            if grid[key] == 2:
+                possible.add(key)
+                confirmed.add(key)
+        to_check = possible.copy()
+
+        while not solved:
+            to_remove = set()
+            for block in to_check:
+                neighbors = [(block[0], block[1] + 1),
+                             (block[0], block[1] - 1),
+                             (block[0] + 1, block[1]),
+                             (block[0] - 1, block[1])]
+                good_neighbors = []
+                if block not in confirmed:
+                    for n in neighbors:
+                        if n in possible:
+                            good_neighbors.append(n)
+                    if len(good_neighbors) == 1:
+                        possible.remove(block)
+                        to_remove.add(block)
+                else:
+                    c_n_count = 0
+                    for n in neighbors:
+                        if n in confirmed:
+                            c_n_count += 1
+                        elif n in possible:
+                            good_neighbors.append(n)
+                    if len(good_neighbors) == 1 and c_n_count < 2:
+                        confirmed.add(good_neighbors[0])
+                        to_remove.add(block)
+                    if c_n_count == 2:
+                        solved = True
+            for b in to_remove:
+                to_check.remove(b)
+
+        return len(confirmed) - 1
+
     def part1(self):
         grid = {(0, 0): 1}
         dir = 0
         my_dir = self.dir_map_for_me[dir]
         x = 0
         y = 0
-        found_oxygen = False
         self.machine.run_until_io_or_halt()
 
-        def consider_turning(dir):
-            for dir_check in range(4):
-                my_dir_check = self.dir_map_for_me[dir_check]
-                if (x + my_dir_check[0], y + my_dir_check[1]) not in grid:
-                    return dir_check
-            return dir
         turns = 0
         while True:
             self.machine.add_input(self.dir_map_for_bot[dir])
@@ -241,14 +283,14 @@ class AdventOfCode:
                 x += my_dir[0]
                 y += my_dir[1]
                 grid[(x, y)] = 2
-                found_oxygen = True
-                print((x, y))
 
             turns += 1
             if x == 0 and y == 0 and turns >= 10:
                 break
-        self.print_grid(grid)
+        # self.print_grid(grid)
         self.grid = grid
+
+        return self.find_maze_length()
 
     def part2(self):
         non_oxy = set()
