@@ -1,8 +1,3 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from time import sleep
-
-
 class IntCode:
 
     def __init__(self, obj_id, init_state):
@@ -165,48 +160,21 @@ class AdventOfCode:
     def part1(self):
         self.machine.reset_state()
         self.machine.run_until_halt()
-        my_str = ''
-        lines = []
-        line = []
-        for o in self.machine.outputs:
-            my_str += chr(o)
-            if chr(o) != '\n':
-                line.append(chr(o))
-            else:
-                if len(line) > 0:
-                    lines.append(line)
-                    line = []
+        my_str = ''.join(map(chr, self.machine.outputs))
+        lines = my_str.strip().split()
 
-        # print(my_str)
-        # print(lines)
-
-        inters = []
-        for y, line in enumerate(lines):
-            # print(f'y: {y}')
-            if y == 0 or y == len(lines) - 1:
-                continue
-            for x, ch in enumerate(line):
-                # print(f'x: {x}')
-                if x == 0 or x == len(line) - 1:
-                    continue
+        my_sum = 0
+        for y in range(1, len(lines)-1):
+            for x in range(1, len(lines[y])-1):
 
                 if lines[y][x] == '#' and \
-                    lines[y-1][x] == '#' and \
-                    lines[y+1][x] == '#' and \
-                    lines[y][x-1] == '#' and \
-                    lines[y][x+1] == '#':
-                    inters.append((x, y))
-                    # print((x, y))
-                    lines[y][x] = 'O'
+                        lines[y-1][x] == '#' and \
+                        lines[y+1][x] == '#' and \
+                        lines[y][x-1] == '#' and \
+                        lines[y][x+1] == '#':
+                    my_sum += x * y
 
-        # for line in lines:
-        #     print(''.join(line))
-
-        sum = 0
-        for inter in inters:
-            sum += inter[0] * inter[1]
-
-        return sum
+        return my_sum
 
     def part2(self):
         self.machine.reset_state()
@@ -224,7 +192,6 @@ class AdventOfCode:
         self.machine.auto_inputs.extend([ord('n'), ord('\n')])
 
         self.machine.run_until_halt()
-        # print(''.join(map(chr, self.machine.outputs)))
 
         return self.machine.outputs[-1]
 
