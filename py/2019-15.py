@@ -257,6 +257,7 @@ class AdventOfCode:
         return len(confirmed) - 1
 
     def part1(self):
+        self.machine.reset_state()
         grid = {(0, 0): 1}
         dir = 0
         my_dir = self.dir_map_for_me[dir]
