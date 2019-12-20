@@ -164,17 +164,12 @@ class AdventOfCode:
                 self.machine.reset_state()
                 self.machine.auto_inputs = [x, y]
                 self.machine.run_until_output_or_halt()
-                out = self.machine.outputs[-1]
-                if out == 1:
-                    beam += 1
+                beam += self.machine.outputs[-1]
         return beam
 
     def part2(self):
-        cols = {}
-        rows = {}
-
-        # Trace top of beam (max x, min y)
-        y = 500
+        # Trace top of beam
+        y = 0
         x = 500
         while x <= 2000 and y <= 2000:
             self.machine.reset_state()
@@ -184,62 +179,10 @@ class AdventOfCode:
             if out == 0:
                 y += 1
             elif out == 1:
-                col = cols.setdefault(x, [1_000, -1])
-                col[0] = y if y < col[0] else col[0]
-                row = rows.setdefault(y, [1_000, -1])
-                row[1] = x if x > row[1] else row[1]
+                self.machine.reset_state()
+                self.machine.auto_inputs = [x - 99, y + 99]
+                self.machine.run_until_output_or_halt()
+                out = self.machine.outputs[-1]
+                if out == 1:
+                    return (x - 99) * 10_000 + y
                 x += 1
-
-        # Trace bottom of beam (min x, max y)
-        y = 500
-        x = 500
-        while x <= 2000 and y <= 2000:
-            self.machine.reset_state()
-            self.machine.auto_inputs = [x, y]
-            self.machine.run_until_output_or_halt()
-            out = self.machine.outputs[-1]
-            if out == 0:
-                x += 1
-            elif out == 1:
-                col = cols.setdefault(x, [1_000, -1])
-                col[1] = y if y > col[1] else col[1]
-                row = rows.setdefault(y, [1_000, -1])
-                row[0] = x if x < row[0] else row[0]
-                y += 1
-
-        tl = (100_000, 100_000)
-        for col in cols:
-            if col > tl[0]:
-                continue
-            lims = cols[col]
-            if lims[1] < 100:
-                continue
-            height = lims[1] - lims[0] + 1
-            if height < 100:
-                continue
-
-            bl = (col, lims[1])
-            tr = (col + 99, lims[1] - 99)
-            if tr[0] in cols:
-                if tr[1] >= cols[tr[0]][0]:
-                    if lims[1] - 99 < tl[1]:
-                        tl = (col, lims[1] - 99)
-
-        for row in rows:
-            if row > tl[1]:
-                continue
-            lims = rows[row]
-            if lims[1] < 100:
-                continue
-            width = lims[1] - lims[0] + 1
-            if width < 100:
-                continue
-
-            tr = (lims[1], row)
-            bl = (lims[1] - 99, row + 99)
-            if bl[1] in rows:
-                if bl[0] >= rows[bl[1]][0]:
-                    if lims[1] - 99 < tl[0]:
-                        tl = (lims[1] - 99, row)
-
-        return tl[0] * 10_000 + tl[1]
