@@ -101,70 +101,56 @@ class AdventOfCode:
                     if p1_i is not None:
                         if p2_i is not None:
                             if nx.has_path(self.G, p1_i, p2_i):
-                                path = nx.shortest_path(self.G, p1_i, p2_i)
-                                my_len = len(path) - 1
+                                path = nx.shortest_path_length(self.G, p1_i, p2_i)
 
                                 p1_dict = p_to_p.setdefault(p1 + '_i', {})
-                                p1_dict[p2 + '_i'] = my_len
-
+                                p1_dict[p2 + '_i'] = path
                                 p2_dict = p_to_p.setdefault(p2 + '_i', {})
-                                p2_dict[p1 + '_i'] = my_len
+                                p2_dict[p1 + '_i'] = path
 
                         if nx.has_path(self.G, p1_i, p2_o):
-                            path = nx.shortest_path(self.G, p1_i, p2_o)
-                            my_len = len(path) - 1
+                            path = nx.shortest_path_length(self.G, p1_i, p2_o)
 
                             p1_dict = p_to_p.setdefault(p1 + '_i', {})
-                            p1_dict[p2 + '_o'] = my_len
-
+                            p1_dict[p2 + '_o'] = path
                             p2_dict = p_to_p.setdefault(p2 + '_o', {})
-                            p2_dict[p1 + '_i'] = my_len
+                            p2_dict[p1 + '_i'] = path
 
                     if nx.has_path(self.G, p1_o, p2_o):
-                        path = nx.shortest_path(self.G, p1_o, p2_o)
-                        my_len = len(path) - 1
+                        path = nx.shortest_path_length(self.G, p1_o, p2_o)
 
                         p1_dict = p_to_p.setdefault(p1 + '_o', {})
-                        p1_dict[p2 + '_o'] = my_len
-
+                        p1_dict[p2 + '_o'] = path
                         p2_dict = p_to_p.setdefault(p2 + '_o', {})
-                        p2_dict[p1 + '_o'] = my_len
+                        p2_dict[p1 + '_o'] = path
 
                 if p2_i is not None:
                     if nx.has_path(self.G, p1_o, p2_i):
-                        path = nx.shortest_path(self.G, p1_o, p2_i)
-                        my_len = len(path) - 1
+                        path = nx.shortest_path_length(self.G, p1_o, p2_i)
 
                         p1_dict = p_to_p.setdefault(p1 + '_o', {})
-                        p1_dict[p2 + '_i'] = my_len
-
+                        p1_dict[p2 + '_i'] = path
                         p2_dict = p_to_p.setdefault(p2 + '_i', {})
-                        p2_dict[p1 + '_o'] = my_len
+                        p2_dict[p1 + '_o'] = path
 
         # print(self.p_to_p)
 
         # --------------Begin navigating-----------------
 
-        states_to_examine = [(0, ((),           # 0: Portals passed through
-                                  0,            # 1: Depth
-                                  'AA_o',       # 2: Position
-                                  0))]          # 3: Cumulative distance
+        states_to_examine = [(0, (0,            # 0: Depth
+                                  'AA_o'))]     # 1: Position
         heapq.heapify(states_to_examine)
 
-        winner_state = None
         parents = {}
-        while winner_state is None:
+        while True:
             cum_dist, state = heapq.heappop(states_to_examine)
 
             memo = {}
 
-            history = state[0]
-            depth = state[1]
-            pos = state[2]
-            assert cum_dist == state[3]
+            depth = state[0]
+            pos = state[1]
 
             if pos == 'ZZ_i' and depth == -1:
-                winner_state = state
                 break
 
             for _pos in p_to_p[pos]:
@@ -180,17 +166,14 @@ class AdventOfCode:
 
                 _pos = _pos[:-1] + ('o' if direction == 'i' else 'i')
                 _depth = depth + (1 if direction == 'i' else -1)
-                _history = tuple(sorted(history + (_pos,)))
                 _cum_dist = cum_dist + dist
+                _state = (_depth,
+                          _pos)
 
-                if (_history, _depth, _pos) not in memo or _cum_dist < memo[(_history, _depth, _pos)]:
-                    memo[(_history, _depth, _pos)] = _cum_dist
-                    _state = (_history,
-                              _depth,
-                              _pos,
-                              _cum_dist)
-                    parents[(_state[0], _state[1], _state[2])] = (state[0], state[1], state[2])
+                if _state not in memo or _cum_dist < memo[_state]:
+                    memo[_state] = _cum_dist
+                    parents[_state] = state
                     heapq.heappush(states_to_examine, (_cum_dist, _state))
 
-        return winner_state[3]
+        return cum_dist
 
