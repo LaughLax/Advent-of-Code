@@ -3,9 +3,10 @@ class AdventOfCode:
     def __init__(self, filename):
         with open(filename) as f:
             self.input = f.read().split('\n\n')
+
         self.passports = []
         for line_set in self.input:
-            line_set = line_set.replace('\n',' ').strip()
+            line_set = line_set.replace('\n', ' ').strip()
             data = line_set.split(' ')
             pp = dict()
             for d in data:
@@ -30,12 +31,12 @@ class AdventOfCode:
         valid = 0
         for pp in self.passports:
 
-            next = False
+            cont = False
             for att in ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']:
                 if att not in pp.keys():
-                    next = True
+                    cont = True
                     break
-            if next:
+            if cont:
                 continue
 
             if not (1920 <= int(pp['byr']) <= 2002):
