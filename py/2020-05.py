@@ -4,22 +4,23 @@ class AdventOfCode:
         with open(filename) as f:
             self.input = f.read().splitlines()
 
+    def parse_line(self, line):
+        row = 0
+        for char in line[0:7]:
+            row = row << 1
+            if char == 'B':
+                row += 1
+        col = 0
+        for char in line[7:]:
+            col = col << 1
+            if char == 'R':
+                col += 1
+        return row * 8 + col
+
     def part1(self):
         max_id = 0
         for line in self.input:
-            row = 0
-            for char in line[0:7]:
-                if char == 'B':
-                    row += 1
-                row = row << 1
-            row = row >> 1
-            col = 0
-            for char in line[7:]:
-                if char == 'R':
-                    col += 1
-                col = col << 1
-            col = col >> 1
-            seat_id = row * 8 + col
+            seat_id = self.parse_line(line)
             max_id = max(max_id, seat_id)
 
         return max_id
@@ -29,19 +30,7 @@ class AdventOfCode:
         min_id = 10000
         max_id = 0
         for line in self.input:
-            row = 0
-            for char in line[0:7]:
-                if char == 'B':
-                    row += 1
-                row = row << 1
-            row = row >> 1
-            col = 0
-            for char in line[7:]:
-                if char == 'R':
-                    col += 1
-                col = col << 1
-            col = col >> 1
-            seat_id = row * 8 + col
+            seat_id = self.parse_line(line)
             ids.add(seat_id)
             min_id = min(min_id, seat_id)
             max_id = max(max_id, seat_id)
