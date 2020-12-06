@@ -7,22 +7,19 @@ class AdventOfCode:
     def part1(self):
         total = 0
         for group in self.input:
-            q_s = set()
-            for line in group:
-                for char in line.strip():
-                    q_s.add(char)
-            total += len(q_s)
+            group_ans = set()
+            for char in group:
+                if char != '\n':
+                    group_ans.add(char)
+            total += len(group_ans)
         return total
-
 
     def part2(self):
         total = 0
         for group in self.input:
-            q_s = set([c for c in 'abcdefghijklmnopqrstuvwxyz'])
-            for line in group.splitlines():
-                person = set()
-                for char in line.strip():
-                    person.add(char)
-                q_s = q_s & person
-            total += len(q_s)
+            g = group.splitlines()
+            group_ans = set(g[0])
+            for line in g[1:]:
+                group_ans = group_ans & set(line)
+            total += len(group_ans)
         return total
