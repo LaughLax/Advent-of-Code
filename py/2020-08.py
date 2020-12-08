@@ -1,3 +1,6 @@
+import networkx as nx
+
+
 class AdventOfCode:
 
     def __init__(self, filename):
@@ -23,46 +26,15 @@ class AdventOfCode:
         return acc
 
     def part2(self):
-        ptr = 0
-        acc = 0
-        seen = set()
-        while ptr not in seen:
-            if self.code[ptr][0] == 'acc':
-                acc += self.code[ptr][1]
-                ptr += 1
-            elif self.code[ptr][0] == 'jmp':
-                seen.add(ptr)
-                if ptr >= 619:
-                    ptr += 1
-                else:
-                    ptr += self.code[ptr][1]
-            elif self.code[ptr][0] == 'nop':
-                seen.add(ptr)
-                if ptr + self.code[ptr][1] >= 620:
-                    ptr += self.code[ptr][1]
-                else:
-                    ptr += 1
+        g = nx.DiGraph()
 
-        for line in seen:
-            preserve = self.code[line]
-            if preserve[0] == 'nop':
-                self.code[line] = ('jmp', preserve[1])
-            else:
-                self.code[line] = ('nop', preserve[1])
-
-            new_seen = set()
-            ptr = 0
-            acc = 0
-            while ptr not in new_seen:
-                if ptr == 625:
-                    return acc
-                new_seen.add(ptr)
-                if self.code[ptr][0] == 'acc':
-                    acc += self.code[ptr][1]
-                    ptr += 1
-                elif self.code[ptr][0] == 'jmp':
-                    ptr += self.code[ptr][1]
-                elif self.code[ptr][0] == 'nop':
-                    ptr += 1
-
-            self.code[line] = preserve
+        for i, line in enumerate(self.code):
+            if line[0] != 'acc':
+                g.add_edge(i,
+                           i + line[1] if line[0] == 'nop' else i + 1,
+                           weight=100_000)
+            g.add_edge(i,
+                       i + line[1] if line[0] == 'jmp' else i + 1,
+                       weight=line[1] if line[0] == 'acc' else 0)
+        path_len = nx.shortest_path_length(g, 0, 625, weight='weight')
+        return path_len - 100_000
