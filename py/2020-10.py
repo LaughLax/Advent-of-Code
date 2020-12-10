@@ -46,12 +46,9 @@ class AdventOfCode:
         nodes[0] = Node(0)
         for val in self.input:
             nodes[val] = Node(val)
-            if val-3 in nodes:
-                nodes[val-3].add_child(nodes[val])
-            if val-2 in nodes:
-                nodes[val-2].add_child(nodes[val])
-            if val-1 in nodes:
-                nodes[val-1].add_child(nodes[val])
+            for i in range(1,4):
+                if val-i in nodes:
+                    nodes[val-i].add_child(nodes[val])
         nodes[val+3] = Node(val+3)
 
         return nodes[0].paths_down()
