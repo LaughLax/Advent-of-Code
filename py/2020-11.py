@@ -1,6 +1,3 @@
-from copy import deepcopy
-
-
 class Grid:
     def __init__(self, input_str):
         self.grid = {}
@@ -15,19 +12,7 @@ class Grid:
         self.pos = frozenset(self.grid.keys())
         self.static = set()
 
-        self.t = 0
-
-    def link_neighbors_pt1(self):
-        for pos in self.grid:
-            for dy in (-1, 0, 1):
-                for dx in (-1, 0, 1):
-                    if dy == 0 and dx == 0:
-                        continue
-
-                    if (pos[0]+dy, pos[1]+dx) in self.grid:
-                        self.grid[pos].attach_neighbor(self.grid[(pos[0]+dy, pos[1]+dx)])
-
-    def link_neighbors_pt2(self):
+    def link_neighbors(self):
         for pos in self.grid:
             for dy in (-1, 0, 1):
                 for dx in (-1, 0, 1):
@@ -36,25 +21,31 @@ class Grid:
 
                     y = pos[0] + dy
                     x = pos[1] + dx
+                    k = 1
                     
                     while 0 <= y < self.height \
                           and 0 <= x < self.width:
 
                         if (y, x) in self.grid:
-                            self.grid[pos].attach_neighbor(self.grid[(y, x)])
+                            self.grid[pos].attach_neighbor(self.grid[(y, x)], k>1)
                             break
 
                         y += dy
                         x += dx
+                        k += 1
                         
 
-    def reset_state(self):
+    def reset_state(self, part2):
         for pos in self.grid:
-            self.grid[pos].occupied = False
+            c = self.grid[pos]
+            c.occupied = False
+            if not part2:
+                c.neighbors = c.neighbors_split[0]
+            else:
+                c.neighbors = c.neighbors_split[0] | c.neighbors_split[1]
+        self.static.clear()
 
     def tick(self, empty_threshold):
-        self.t += 1
-        
         to_tick = self.pos - self.static
         for pos in to_tick:
             if not self.grid[pos].prep_tick(empty_threshold):
@@ -83,12 +74,14 @@ class Grid:
 class Chair:
     def __init__(self):
         self.occupied = False
+        self.neighbors_split = (set(), set())
         self.neighbors = set()
         self.next_state = False
 
-    def attach_neighbor(self, other_cell):
-        self.neighbors.add(other_cell)
-        other_cell.neighbors.add(self)
+    def attach_neighbor(self, other_cell, far):
+        sel = 1 if far else 0
+        self.neighbors_split[sel].add(other_cell)
+        other_cell.neighbors_split[sel].add(self)
 
     def prep_tick(self, empty_threshold):
         occ_neighbors = sum([n.occupied for n in self.neighbors])
@@ -110,17 +103,18 @@ class AdventOfCode:
         with open(filename) as f:
             self.input = f.read().splitlines()
 
+        self.state = Grid(self.input)
+        self.state.link_neighbors()
+
     def part1(self):
-        state = Grid(self.input)
-        state.link_neighbors_pt1()
-        while state.tick(4):
+        self.state.reset_state(False)
+        while self.state.tick(4):
             pass
-        return state.count_occ()
+        return self.state.count_occ()
 
 
     def part2(self):
-        state = Grid(self.input)
-        state.link_neighbors_pt2()
-        while state.tick(5):
+        self.state.reset_state(True)
+        while self.state.tick(5):
             pass
-        return state.count_occ()
+        return self.state.count_occ()
