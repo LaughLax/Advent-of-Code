@@ -7,14 +7,16 @@ class AdventOfCode:
         with open(filename) as f:
             self.input = [list(line) for line in f.read().splitlines()]
 
-    def same(self, old, new):
+    @staticmethod
+    def same(old, new):
         for i in range(len(old)):
             for j in range(len(old[i])):
                 if old[i][j] != new[i][j]:
                     return False
         return True
 
-    def count_occ(self, state):
+    @staticmethod
+    def count_occ(state):
         count = 0
         for i in state:
             for j in i:
@@ -22,11 +24,16 @@ class AdventOfCode:
                     count += 1
         return count
 
+    @staticmethod
+    def copy_in_place(dest, orig):
+        for i, row in enumerate(orig):
+            for j, val in enumerate(row):
+                dest[i][j] = val
+
     def part1(self):
         state = deepcopy(self.input)
+        new_state = deepcopy(state)
         while True:
-            new_state = deepcopy(state)
-
             for i in range(len(state)):
                 for j in range(len(state[i])):
                     if state[i][j] == '.':
@@ -60,16 +67,13 @@ class AdventOfCode:
             if self.same(state, new_state):
                 return self.count_occ(new_state)
             else:
-                state = new_state
+                self.copy_in_place(state, new_state)
 
 
     def part2(self):
         state = deepcopy(self.input)
-        ct = 0
+        new_state = deepcopy(state)
         while True:
-            ct += 1
-            new_state = deepcopy(state)
-
             for i in range(len(state)):
                 for j in range(len(state[i])):
                     if state[i][j] == '.':
@@ -189,4 +193,4 @@ class AdventOfCode:
             if self.same(state, new_state):
                 return self.count_occ(new_state)
             else:
-                state = new_state
+                self.copy_in_place(state, new_state)
