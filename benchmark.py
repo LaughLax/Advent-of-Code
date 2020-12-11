@@ -2,6 +2,10 @@ import os.path as path
 from importlib import import_module
 import timeit
 
+MAX_RUNS = 10_000
+MIN_RUNS = 20
+TIME_GOAL = 10 * 1000
+
 
 def setup(year, day):
     code = import_module(f'py.{year}-{day:02}')
@@ -15,9 +19,9 @@ def time_line(line):
     # Run once for rough estimate of time
     t = timeit.timeit(line, number=1, globals=globals()) * 1000
 
-    # Aim for 10 seconds of benchmarking.
-    # Minimum 20 runs, maximum 10,000.
-    num = max(20, min(int(10000 / t), 10000))
+    # Aim for TIME_GOAL seconds of benchmarking (set above).
+    # Minimum and maximum run counts also set above.
+    num = max(MIN_RUNS, min(int(TIME_GOAL / t), MAX_RUNS))
 
     return timeit.timeit(line, number=num, globals=globals()) / num * 1000
 
@@ -34,8 +38,8 @@ with open(output_file,'w') as f:
     f.write('# Benchmarking Process\n\n')
     f.write('To benchmark code, execution is split into 3 sections: setup, part 1 solution-finding, and part 2 solution-finding. ')
     f.write('For each section, code is first timed for one execution to get an estimate of its run-time. ')
-    f.write('That estimate is used to decide how many times to repeat, aiming for about 10 seconds of work per section. ')
-    f.write('Each section runs a minimum of 20 times and a maximum of 10,000.\n\n')
+    f.write(f'That estimate is used to decide how many times to repeat, aiming for about {TIME_GOAL / 1000:.0f} seconds of work per section. ')
+    f.write(f'Each section runs a minimum of {MIN_RUNS:d} times and a maximum of {MAX_RUNS:,d}.\n\n')
     f.write('Benchmarks are taken on one of the following 2 computers.\n\n')
     f.write('|Computer|Python Version|Processor|Memory|\n')
     f.write('|---:|---|---|---|\n')
