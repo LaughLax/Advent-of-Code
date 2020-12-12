@@ -22,18 +22,17 @@ class Grid:
                     y = pos[0] + dy
                     x = pos[1] + dx
                     k = 1
-                    
+
                     while 0 <= y < self.height \
-                          and 0 <= x < self.width:
+                            and 0 <= x < self.width:
 
                         if (y, x) in self.grid:
-                            self.grid[pos].attach_neighbor(self.grid[(y, x)], k>1)
+                            self.grid[pos].attach_neighbor(self.grid[(y, x)], k > 1)
                             break
 
                         y += dy
                         x += dx
                         k += 1
-                        
 
     def reset_state(self, part2):
         for pos in self.grid:
@@ -59,16 +58,16 @@ class Grid:
         return sum([self.grid[pos].occupied for pos in self.grid])
 
     def print(self):
-        outpt = []
+        output = []
         for y in range(self.height):
             row = []
             for x in range(self.width):
                 if (y, x) in self.grid:
-                    row.append('#' if self.grid[(y,x)].occupied else 'L')
+                    row.append('#' if self.grid[(y, x)].occupied else 'L')
                 else:
                     row.append('.')
-            outpt.append(row)
-        print('\n'.join([''.join(l) for l in outpt]))
+            output.append(row)
+        print('\n'.join([''.join(line) for line in output]))
 
 
 class Chair:
@@ -111,7 +110,6 @@ class AdventOfCode:
         while self.state.tick(4):
             pass
         return self.state.count_occ()
-
 
     def part2(self):
         self.state.reset_state(True)
