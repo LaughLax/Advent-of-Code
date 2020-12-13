@@ -141,7 +141,7 @@ class AdventOfCode:
                                   'AA_o'))]     # 1: Position
         heapq.heapify(states_to_examine)
 
-        parents = {}
+        # parents = {}
         while True:
             cum_dist, state = heapq.heappop(states_to_examine)
 
@@ -172,7 +172,7 @@ class AdventOfCode:
 
                 if _state not in memo or _cum_dist < memo[_state]:
                     memo[_state] = _cum_dist
-                    parents[_state] = state
+                    # parents[_state] = state
                     heapq.heappush(states_to_examine, (_cum_dist, _state))
 
         return cum_dist

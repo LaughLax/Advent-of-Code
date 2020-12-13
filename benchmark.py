@@ -7,23 +7,23 @@ MIN_RUNS = 20
 TIME_GOAL = 10 * 1000
 
 
-def setup(year, day):
-    code = import_module(f'py.{year}-{day:02}')
-    input_filename = path.join('input',f'{year}-{day:02}.txt')
-    day_obj = code.AdventOfCode(input_filename)
-    return day_obj
+def setup(y, d):
+    code = import_module(f'py.{y}.{d:02}')
+    input_filename = path.join('input', f'{y}', f'{d:02}.txt')
+    d_obj = code.AdventOfCode(input_filename)
+    return d_obj
 
 
-def time_line(line):
+def time_line(code):
 
     # Run once for rough estimate of time
-    t = timeit.timeit(line, number=1, globals=globals()) * 1000
+    t = timeit.timeit(code, number=1, globals=globals()) * 1000
 
     # Aim for TIME_GOAL seconds of benchmarking (set above).
     # Minimum and maximum run counts also set above.
     num = max(MIN_RUNS, min(int(TIME_GOAL / t), MAX_RUNS))
 
-    return timeit.timeit(line, number=num, globals=globals()) / num * 1000
+    return timeit.timeit(code, number=num, globals=globals()) / num * 1000
 
 
 with open('days_to_run.txt') as f:
@@ -31,7 +31,7 @@ with open('days_to_run.txt') as f:
 
 output_file = 'readme.md'
 
-with open(output_file,'w') as f:
+with open(output_file, 'w') as f:
     f.write('# Advent of Code\n\n')
     f.write('Info about Advent of Code goes here\n\n')
     
@@ -55,27 +55,27 @@ for line in lines:
     to_run.setdefault(int(line[0]), set()).add(int(line[1]))
 
 t_total = 0
-for year in sorted(to_run,reverse=True):
-    with open(output_file,'a') as f:
+for year in sorted(to_run, reverse=True):
+    with open(output_file, 'a') as f:
         f.write(f'## Year {year}\n')
         f.write('|Day|Setup|Part 1|Part 2| Total|\n')
         f.write('|:---|---:|---:|---:|---:|\n')
 
     for day in sorted(to_run[year], reverse=True):
         print(f'{year} Advent of Code - Day {day:2}\n')
-        with open(output_file,'a') as f:
+        with open(output_file, 'a') as f:
             f.write(f'|{day:2}|')
 
         t0 = time_line('setup(year, day)')
         day_obj = setup(year, day)
         print(f"Setup:  {t0:9.3f}ms")
-        with open(output_file,'a') as f:
+        with open(output_file, 'a') as f:
             f.write(f"`{t0:.3f} ms`|")
 
         t1 = time_line('day_obj.part1()')
         p1 = day_obj.part1()
         print(f"Part 1: {t1:9.3f}ms")
-        with open(output_file,'a') as f:
+        with open(output_file, 'a') as f:
             f.write(f"`{t1:.3f} ms`|")
 
         t2 = time_line('day_obj.part2()')
@@ -83,7 +83,7 @@ for year in sorted(to_run,reverse=True):
         print(f"Part 2: {t2:9.3f}ms")
         print(f"Total:  {(t0+t1+t2):9.3f}ms\n")
         t_total += t0 + t1 + t2
-        with open(output_file,'a') as f:
+        with open(output_file, 'a') as f:
             f.write(f"`{t2:.3f} ms`|")
 
             f.write(f"`{(t0+t1+t2):.3f} ms`|\n")

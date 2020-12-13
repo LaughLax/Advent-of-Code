@@ -1,3 +1,3 @@
 .idea/
-py/__pycache__/
+__pycache__/
 days_to_run.txt
