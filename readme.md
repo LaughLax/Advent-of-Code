@@ -4,7 +4,7 @@ Info about Advent of Code goes here
 
 # Benchmarking Process
 
-To benchmark code, execution is split into 3 sections: setup, part 1 solution-finding, and part 2 solution-finding. For each section, code is first timed for one execution to get an estimate of its run-time. That estimate is used to decide how many times to repeat, aiming for about 10 seconds of work per section. Each section runs a minimum of 20 times and a maximum of 10,000.
+To benchmark code, execution is split into 3 sections: setup, part 1 solution-finding, and part 2 solution-finding. For each section, code is first timed for one execution to get an estimate of its run-time. That estimate is used to decide how many times to repeat, aiming for about 30 seconds of work per section. Each section runs a minimum of 100 times and a maximum of 100,000.
 
 Benchmarks are taken on one of the following 2 computers.
 
@@ -18,16 +18,22 @@ Benchmarks are taken on one of the following 2 computers.
 ## Year 2020
 |Day|Setup|Part 1|Part 2| Total|
 |:---|---:|---:|---:|---:|
-|10|`0.176 ms`|`0.017 ms`|`0.285 ms`|`0.478 ms`|
-| 9|`0.421 ms`|`5.607 ms`|`9.626 ms`|`15.654 ms`|
-| 8|`0.565 ms`|`0.076 ms`|`2.540 ms`|`3.181 ms`|
-| 7|`3.536 ms`|`0.074 ms`|`0.022 ms`|`3.632 ms`|
-| 6|`0.280 ms`|`0.668 ms`|`1.368 ms`|`2.316 ms`|
-| 5|`0.634 ms`|`0.021 ms`|`0.083 ms`|`0.738 ms`|
-| 4|`1.326 ms`|`0.131 ms`|`0.725 ms`|`2.182 ms`|
-| 3|`0.196 ms`|`0.192 ms`|`0.842 ms`|`1.230 ms`|
-| 2|`0.281 ms`|`1.120 ms`|`1.028 ms`|`2.428 ms`|
-| 1|`0.189 ms`|`0.149 ms`|`0.139 ms`|`0.477 ms`|
+|16|`1.583 ms`|`2.071 ms`|`20.632 ms`|`24.286 ms`|
+|15|`0.122 ms`|`0.397 ms`|`10919.557 ms`|`10920.076 ms`|
+|14|`0.219 ms`|`1.432 ms`|`54.142 ms`|`55.793 ms`|
+|13|`0.130 ms`|`0.003 ms`|`0.325 ms`|`0.457 ms`|
+|12|`0.438 ms`|`0.238 ms`|`0.312 ms`|`0.989 ms`|
+|11|`71.178 ms`|`263.311 ms`|`535.358 ms`|`869.847 ms`|
+|10|`0.150 ms`|`0.016 ms`|`0.253 ms`|`0.419 ms`|
+| 9|`0.432 ms`|`5.544 ms`|`9.904 ms`|`15.880 ms`|
+| 8|`0.546 ms`|`0.073 ms`|`2.523 ms`|`3.143 ms`|
+| 7|`3.520 ms`|`0.074 ms`|`0.022 ms`|`3.616 ms`|
+| 6|`0.284 ms`|`0.655 ms`|`1.370 ms`|`2.309 ms`|
+| 5|`0.646 ms`|`0.020 ms`|`0.083 ms`|`0.749 ms`|
+| 4|`1.290 ms`|`0.125 ms`|`0.707 ms`|`2.123 ms`|
+| 3|`0.183 ms`|`0.189 ms`|`0.841 ms`|`1.213 ms`|
+| 2|`0.286 ms`|`1.128 ms`|`1.033 ms`|`2.448 ms`|
+| 1|`0.188 ms`|`0.144 ms`|`0.133 ms`|`0.465 ms`|
 ## Year 2019
 |Day|Setup|Part 1|Part 2| Total|
 |:---|---:|---:|---:|---:|
