@@ -1,3 +1,37 @@
+# import re
+
+''' For alternate method based on method overloading (runs slower)
+class MyIntOne(int):
+
+    def __add__(self, other):
+        return MyIntOne(int(self) + int(other))
+
+    def __radd__(self, other):
+        return MyIntOne(int(self) + int(other))
+
+    def __sub__(self, other):
+        return MyIntOne(int(self) * int(other))
+
+    def __rsub__(self, other):
+        return MyIntOne(int(self) * int(other))
+
+
+class MyIntTwo(int):
+
+    def __sub__(self, other):
+        return MyIntTwo(int(self) * int(other))
+
+    def __rsub__(self, other):
+        return MyIntTwo(int(self) * int(other))
+
+    def __mul__(self, other):
+        return MyIntTwo(int(self) + int(other))
+
+    def __rmul__(self, other):
+        return MyIntTwo(int(self) + int(other))
+'''
+
+
 class AdventOfCode:
 
     def __init__(self, filename):
@@ -87,6 +121,16 @@ class AdventOfCode:
         return expr[0]
 
     def part1(self):
+
+        ''' Alternate method based on method overloading. Runs slower.
+        pattern = re.compile(r'(\d)')
+        total = 0
+        for line in self.input:
+            new_line = pattern.sub(r'MyIntOne(\1)', line).replace('*', '-')
+            total += eval(new_line)
+        return total
+        '''
+
         total = 0
         for i, line in enumerate(self.input):
             res = self.eval_expr_pt1(line.split(' '))
@@ -95,6 +139,16 @@ class AdventOfCode:
         return total
 
     def part2(self):
+
+        ''' Alternate method based on method overloading. Runs slower.
+        pattern = re.compile(r'(\d)')
+        total = 0
+        for line in self.input:
+            new_line = pattern.sub(r'MyIntTwo(\1)', line).replace('*', '-').replace('+', '*')
+            total += eval(new_line)
+        return total
+        '''
+
         total = 0
         for i, line in enumerate(self.input):
             res = self.eval_expr_pt2(line)
