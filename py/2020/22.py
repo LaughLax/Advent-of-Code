@@ -1,5 +1,4 @@
 from collections import deque
-from copy import copy
 
 
 class AdventOfCode:
@@ -9,12 +8,12 @@ class AdventOfCode:
             self.input = f.read()
 
         p1, p2 = self.input.split('\n\n')
-        self.deck_1 = deque([int(i) for i in p1.splitlines()[1:]])
-        self.deck_2 = deque([int(i) for i in p2.splitlines()[1:]])
+        self.deck_1 = [int(i) for i in p1.splitlines()[1:]]
+        self.deck_2 = [int(i) for i in p2.splitlines()[1:]]
 
     def part1(self):
-        p1 = copy(self.deck_1)
-        p2 = copy(self.deck_2)
+        p1 = deque(self.deck_1)
+        p2 = deque(self.deck_2)
 
         while len(p1) > 0 and len(p2) > 0:
             c1 = p1.popleft()
@@ -26,9 +25,6 @@ class AdventOfCode:
             elif c2 > c1:
                 p2.append(c2)
                 p2.append(c1)
-            # print(p1)
-            # print(p2)
-            # print()
 
         winner = p1 if len(p1) > 0 else p2
 
@@ -40,47 +36,45 @@ class AdventOfCode:
 
         return tot
 
-    def r_combat(self, deck1: deque, deck2: deque):
+    def r_combat(self, deck1: tuple, deck2: tuple, return_list=True):
         states = set()
 
         while len(deck1) > 0 and len(deck2) > 0:
-            state = (tuple(deck1), tuple(deck2))
+            state = (deck1, deck2)
             if state in states:
-                return 1, list(deck1)
+                return 1, list(deck1) if return_list else None
             states.add(state)
 
-            c1 = deck1.popleft()
-            c2 = deck2.popleft()
-            recurse = (c1 <= len(deck1)) and (c2 <= len(deck2))
+            c1 = deck1[0]
+            c2 = deck2[0]
+            recurse = (c1 <= len(deck1) - 1) and (c2 <= len(deck2) - 1)
             if recurse:
-                d1_subcopy = deque(copy(tuple(deck1)[0:c1]))
-                d2_subcopy = deque(copy(tuple(deck2)[0:c2]))
-                winner, _ = self.r_combat(d1_subcopy, d2_subcopy)
+                winner, _ = self.r_combat(deck1[1:c1+1], deck2[1:c2+1], False)
                 if winner == 1:
-                    deck1.append(c1)
-                    deck1.append(c2)
+                    deck1 = deck1[1:] + (c1, c2)
+                    deck2 = deck2[1:]
                 elif winner == 2:
-                    deck2.append(c2)
-                    deck2.append(c1)
+                    deck1 = deck1[1:]
+                    deck2 = deck2[1:] + (c2, c1)
                 else:
                     raise Exception(winner)
             else:
                 if c1 > c2:
-                    deck1.append(c1)
-                    deck1.append(c2)
+                    deck1 = deck1[1:] + (c1, c2)
+                    deck2 = deck2[1:]
                 elif c2 > c1:
-                    deck2.append(c2)
-                    deck2.append(c1)
+                    deck1 = deck1[1:]
+                    deck2 = deck2[1:] + (c2, c1)
 
         if len(deck1) > 0:
-            return 1, list(deck1)
+            return 1, list(deck1) if return_list else None
         elif len(deck2) > 0:
-            return 2, list(deck2)
+            return 2, list(deck2) if return_list else None
 
         raise Exception()
 
     def part2(self):
-        winner, win_deck = self.r_combat(copy(self.deck_1), copy(self.deck_2))
+        winner, win_deck = self.r_combat(tuple(self.deck_1), tuple(self.deck_2))
 
         i, tot = 0, 0
         for _ in range(len(win_deck)):
