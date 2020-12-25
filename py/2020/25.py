@@ -9,28 +9,21 @@ class AdventOfCode:
         d_pub_key = int(self.input[1])
 
         v = 1
-        c_loop, d_loop = 0, 0
-        c_found, d_found = False, False
-        while not c_found and not d_found:
-            if not c_found:
-                c_loop += 1
-            if not d_found:
-                d_loop += 1
+        loop_size = 0
+        key_to_use = 0
+        while not key_to_use:
+            loop_size += 1
 
             v = (v * 7) % 20201227
 
             if v == c_pub_key:
-                c_found = True
-            if v == d_pub_key:
-                d_found = True
+                key_to_use = d_pub_key
+            elif v == d_pub_key:
+                key_to_use = c_pub_key
 
         v = 1
-        if c_found:
-            for _ in range(c_loop):
-                v = (v * d_pub_key) % 20201227
-        elif d_found:
-            for _ in range(d_loop):
-                v = (v * c_pub_key) % 20201227
+        for _ in range(loop_size):
+            v = (v * key_to_use) % 20201227
 
         return v
 
