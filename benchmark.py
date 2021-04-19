@@ -32,21 +32,17 @@ with open('days_to_run.txt') as f:
 output_file = 'readme.md'
 
 with open(output_file, 'w') as f:
-    f.write('# Advent of Code\n\n')
-    f.write('Info about Advent of Code goes here\n\n')
-    
-    f.write('# Benchmarking Process\n\n')
-    f.write('To benchmark code, execution is split into 3 sections: setup, part 1 solution-finding, and part 2 solution-finding. ')
-    f.write('For each section, code is first timed for one execution to get an estimate of its run-time. ')
+    with open('readme-boilerplate.md', 'r') as boilerplate:
+        f.write(boilerplate.read())
     f.write(f'That estimate is used to decide how many times to repeat, aiming for about {TIME_GOAL / 1000:.0f} seconds of work per section. ')
     f.write(f'Each section runs a minimum of {MIN_RUNS:d} times and a maximum of {MAX_RUNS:,d}.\n\n')
     f.write('Benchmarks are taken on one of the following 2 computers.\n\n')
     f.write('|Computer|Python Version|Processor|Memory|\n')
     f.write('|---:|---|---|---|\n')
-    f.write('|1|3.7|To be filled|To be filled|\n')
-    f.write('|2|3.6.6|i7-7600U|16 GB|\n\n')
+    f.write('|1|3.7|Intel i5-6300HQ 2.3 GHz|8 GB|\n')
+    f.write('|2|3.6.6|Intel i7-7600U|16 GB|\n\n')
     
-    f.write('# Benchmarking Results\n\n')
+    f.write('### Results\n\n')
 
 to_run = {}
 
@@ -57,7 +53,7 @@ for line in lines:
 t_total = 0
 for year in sorted(to_run, reverse=True):
     with open(output_file, 'a') as f:
-        f.write(f'## Year {year}\n')
+        f.write(f'#### Year {year}\n')
         f.write('|Day|Setup|Part 1|Part 2| Total|\n')
         f.write('|:---|---:|---:|---:|---:|\n')
 
