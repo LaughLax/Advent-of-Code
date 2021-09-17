@@ -1,3 +1,7 @@
 .idea/
 __pycache__/
 days_to_run.txt
+target/
+.class
+.log
+.settings/
