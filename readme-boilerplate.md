@@ -4,6 +4,14 @@ Advent of Code is an annual online coding challenge that presents 25 problems, o
 
 ## Completion Time and Ranking
 
+#### Year 2021
+
+|Day|Part 1 Time|Part 1 Rank|Part 2 Time|Part 2 Rank|
+|---:|---:|:---:|---:|:---:|
+|03|8:57|2343|32:47|2893|
+|02|2:42|725|04:32|642|
+|01|2:35|1080|06:28|1111|
+
 #### Year 2020
 
 |Day|Part 1 Time|Part 1 Rank|Part 2 Time|Part 2 Rank|
