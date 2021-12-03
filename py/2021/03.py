@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 class AdventOfCode:
@@ -18,30 +19,24 @@ class AdventOfCode:
         return gamma * eps
 
     def part2(self):
+        df = pd.DataFrame(self.bits, columns=range(self.num_size))
+
         # Oxygen
-        bits_oxy = self.bits.copy()
+        oxy = df.copy()
         for i in range(self.num_size):
-            bits_copy = bits_oxy.copy()
-            want = np.sum(np.array(bits_copy)[:, i]) >= len(bits_copy)/2
-            for row in bits_oxy:
-                if row[i] != want:
-                    bits_copy.remove(row)
-            if len(bits_copy) == 1:
+            want = oxy[i].sum() >= len(oxy) / 2
+            oxy = oxy[oxy[i] == want]
+            if len(oxy) == 1:
                 break
-            bits_oxy = bits_copy
-        oxygen = np.sum([val * (1 << (self.num_size-i-1)) for i, val in enumerate(bits_copy.pop())])
+        oxygen = np.sum(oxy[i].iloc[0] * (1 << (self.num_size - i - 1)) for i in range(self.num_size))
 
         # CO2
-        bits_co2 = self.bits.copy()
+        co = df.copy()
         for i in range(self.num_size):
-            bits_copy = bits_co2.copy()
-            want = np.sum(np.array(bits_copy)[:, i]) < len(bits_copy)/2
-            for row in bits_co2:
-                if row[i] != want:
-                    bits_copy.remove(row)
-            if len(bits_copy) == 1:
+            want = co[i].sum() < len(co) / 2
+            co = co[co[i] == want]
+            if len(co) == 1:
                 break
-            bits_co2 = bits_copy
-        co2 = np.sum([val * (1 << (self.num_size-i-1)) for i, val in enumerate(bits_copy.pop())])
+        co2 = np.sum(co[i].iloc[0] * (1 << (self.num_size - i - 1)) for i in range(self.num_size))
 
         return oxygen * co2
