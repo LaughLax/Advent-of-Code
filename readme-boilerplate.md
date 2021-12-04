@@ -8,6 +8,7 @@ Advent of Code is an annual online coding challenge that presents 25 problems, o
 
 |Day|Part 1 Time|Part 1 Rank|Part 2 Time|Part 2 Rank|
 |---:|---:|:---:|---:|:---:|
+|04|34:41|3220|38:28|2395|
 |03|8:57|2343|32:47|2893|
 |02|2:42|725|04:32|642|
 |01|2:35|1080|06:28|1111|
