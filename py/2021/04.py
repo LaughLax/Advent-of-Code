@@ -11,21 +11,17 @@ class BingoBoard:
             for j, n in enumerate(row):
                 if num == n:
                     self.called[i][j] = True
-                    if self.check_victory():
+                    if self.check_victory(i, j):
                         return self.get_score(num)
 
-    def check_victory(self):
-        # Could make this more efficient by only checking the row & col of the called number
-        cols = [[] for _ in range(5)]
-        for i, row in enumerate(self.called):
-            [cols[j].append(row[j]) for j, _ in enumerate(row)]
-            if all(row):
-                self.won = True
-                return self.won
-        for i, col in enumerate(cols):
-            if all(col):
-                self.won = True
-                return self.won
+    def check_victory(self, row, column):
+        if all(self.called[row]):
+            self.won = True
+            return self.won
+        if all([self.called[i][column] for i in range(5)]):
+            self.won = True
+            return self.won
+        return False
 
     def get_score(self, last_num):
         total = 0
