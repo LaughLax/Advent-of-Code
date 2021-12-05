@@ -29,49 +29,44 @@ class LineSeg:
         self.pts = None
 
     def intersect_v1(self, other):
-        np.abs(self.angle - other.angle)
+        """
+        Determine intersection analytically, return a LineSeg representing it.
+        This is only built to work for Part 1, and will not handle diagonal line segments.
+        """
+        if (
+                self.x_max < other.x_min or
+                self.x_min > other.x_max or
+                self.y_max < other.y_min or
+                self.y_min > other.y_max or
+                other.y_max < self.y_min or
+                other.y_min > self.y_max or
+                other.x_max < self.x_min or
+                other.x_min > self.x_max
+        ):
+            return None
         if np.abs(self.angle - other.angle) < EPS:
             if self.x0 == self.x1:
                 # both vertical
-                if (
-                    self.x0 != other.x0 or
-                    self.y_min > other.y_max or
-                    self.y_max < other.y_min
-                ):
+                if self.x0 != other.x0:
                     return None
                 return LineSeg([self.x0, max(self.y_min, other.y_min), self.x1, min(self.y_max, other.y_max)])
             elif self.y0 == self.y1:
                 # both horizontal
-                if (
-                        self.y0 != other.y0 or
-                        self.x_min > other.x_max or
-                        self.x_max < other.x_min
-                ):
+                if self.y0 != other.y0:
                     return None
                 return LineSeg([max(self.x_min, other.x_min), self.y0, min(self.x_max, other.x_max), self.y1])
         else:
             if self.x0 == self.x1:
                 # self is vertical, other is horizontal
-                if (
-                    self.x0 < other.x_min or
-                    self.x0 > other.x_max or
-                    other.y0 < self.y_min or
-                    other.y0 > self.y_max
-                ):
-                    return None
                 return LineSeg([self.x0, other.y0, self.x0, other.y0])
             elif self.y0 == self.y1:
                 # self is horizontal, other is vertical
-                if (
-                    self.y0 < other.y_min or
-                    self.y0 > other.y_max or
-                    other.x0 < self.x_min or
-                    other.x0 > self.x_max
-                ):
-                    return None
                 return LineSeg([other.x0, self.y0, other.x0, self.y0])
 
     def intersect_v2(self, other):
+        """
+        Determine intersection as the intersect of two sets of points
+        """
         return self.points() & other.points()
 
     def points(self):
