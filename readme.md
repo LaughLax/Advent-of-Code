@@ -4,7 +4,7 @@ Advent of Code is an annual online coding challenge that presents 25 problems, o
 Each problem has two parts; the second part is only revealed once the first has been completed.
 They tend to get harder as the calendar progresses, with some problems building on previous ones.
 The challenges are language-agnostic, and the creator guarantees that a solution exists for each that could run on older hardware.
-I participated real-time beginning in 2018.
+I participated in real time beginning in 2018.
 Starting in 2019, I tried to complete the problem as fast as possible in real time.
 My rank and completion time (starting when the problem was released) is listed in the table below from 2019 onward; times for Part 2 include time spent on Part 1.
 Since problems release at midnight EST, solution times longer than several hours include time asleep.
@@ -17,7 +17,8 @@ Sometimes this has meant finding a more elegant way to solve the problem, and so
 
 |Day|Part 1 Time|Part 1 Rank|Part 2 Time|Part 2 Rank|
 |---:|---:|:---:|---:|:---:|
-|05|17:59:05|18:17:31|44455|
+|06|11:48:06|44115|12:08:52|37451|
+|05|17:59:05|47405|18:17:31|44455|
 |04|34:41|3220|38:28|2395|
 |03|8:57|2343|32:47|2893|
 |02|2:42|725|04:32|642|

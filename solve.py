@@ -15,7 +15,10 @@ with open('days_to_run.txt') as f:
 
         code = import_module(f'py.{year}.{day:02}')
         if len(line) > 2:
-            input_filename = path.join('input', f'{year}', f'{day:02}-example.txt')
+            input_filename = path.join(
+                'input', f'{year}',
+                f'{day:02}-example.txt'
+            )
         else:
             input_filename = path.join('input', f'{year}', f'{day:02}.txt')
 

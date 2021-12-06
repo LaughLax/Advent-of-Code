@@ -34,14 +34,16 @@ output_file = 'readme.md'
 with open(output_file, 'w') as f:
     with open('readme-boilerplate.md', 'r') as boilerplate:
         f.write(boilerplate.read())
-    f.write(f'That estimate is used to decide how many times to repeat, aiming for about {TIME_GOAL / 1000:.0f} seconds of work per section. ')
-    f.write(f'Each section runs a minimum of {MIN_RUNS:d} times and a maximum of {MAX_RUNS:,d}.\n\n')
+    f.write(f'That estimate is used to decide how many times to repeat, aiming for \
+about {TIME_GOAL / 1000:.0f} seconds of work per section. ')
+    f.write(f'Each section runs a minimum of {MIN_RUNS:d} times \
+and a maximum of {MAX_RUNS:,d}.\n\n')
     f.write('Benchmarks are taken on one of the following 2 computers.\n\n')
     f.write('|Computer|Python Version|Processor|Memory|\n')
     f.write('|---:|---|---|---|\n')
     f.write('|1|3.7|Intel i5-6300HQ 2.3 GHz|8 GB|\n')
     f.write('|2|3.6.6|Intel i7-7600U|16 GB|\n\n')
-    
+
     f.write('### Results\n\n')
 
 to_run = {}
