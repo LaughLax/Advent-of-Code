@@ -3,8 +3,8 @@ from importlib import import_module
 import timeit
 
 MAX_RUNS = 10_000
-MIN_RUNS = 20
-TIME_GOAL = 10 * 1000
+MIN_RUNS = 10
+TIME_GOAL = 20 * 1000
 
 
 def setup(y, d):
