@@ -81,8 +81,6 @@ class AdventOfCode:
 
         ptr = nodes[self.input[0]]
         for i in range(10_000_000):
-            if i % 500_000 == 0:
-                print(i)
             p_val = ptr.val
 
             c1 = ptr.right

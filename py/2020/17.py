@@ -1,3 +1,84 @@
+from itertools import product
+
+
+class GridN:
+    def __init__(self, input_str, n_dim):
+        self.grid = {}
+        self.n_dim = min(n_dim, 2)
+        # self.a_pos = set()
+
+        h = len(input_str)
+        w = len(input_str[0])
+
+        for y in range(h):
+            for x in range(w):
+                if input_str[y][x] == '#':
+                    cell = CellN(self, True, x, y, *([0] * (n_dim-2)))
+                    self.grid[(x, y, *([0] * (n_dim-2)))] = cell
+                    # self.a_pos.add(cell)
+                elif input_str[y][x] == '.':
+                    self.grid[(x, y, *([0] * (n_dim-2)))] = CellN(self, False, x, y, *([0] * (n_dim-2)))
+
+        for key in set(self.grid.keys()):
+            dirs = tuple(product((-1, 0, 1), repeat=n_dim))
+            for d in dirs:
+                coord = tuple([a[0] + a[1] for a in zip(key, d)])
+                if coord not in self.grid:
+                    self.grid[coord] = CellN(self, False, *coord)
+
+    def tick(self):
+        changed = set()
+        for pos in set(self.grid.keys()):
+            if self.grid[pos].prep_tick():
+                changed.add(pos)
+        for pos in changed:
+            self.grid[pos].do_tick()
+
+        return len(changed) > 0
+
+    def count_active(self):
+        return sum([cell.active for cell in self.grid.values()])
+
+
+class CellN:
+    def __init__(self, grid, active, *coords):
+        self.g = grid
+        self.active = active
+        self.coords = coords
+        self.next_state = False
+
+        dirs = product((-1, 0, 1), repeat=len(coords))
+        self.n_s = set([tuple([a[0] + a[1] for a in zip(coords, d)]) for d in dirs])
+        self.n_s.discard((0)*len(coords))
+
+    def make_neighbors(self):
+        for n in self.n_s:
+            if n not in self.g.grid:
+                self.g.grid[n] = CellN(self.g, False, *n)
+
+    def prep_tick(self):
+        occ = -1 if self.active else 0
+        for n in self.n_s:
+            if n in self.g.grid and self.g.grid[n].active:
+                occ += 1
+            if occ > 3:
+                break
+
+        if self.active and (occ not in (2, 3)):
+            self.next_state = False
+            return True
+
+        if (not self.active) and (occ == 3):
+            self.next_state = True
+            self.make_neighbors()
+            return True
+
+        return False
+
+    def do_tick(self):
+        self.active = self.next_state
+
+
 class Grid1:
     def __init__(self, input_str):
         self.grid = {}
@@ -256,12 +337,22 @@ class AdventOfCode:
             self.input = f.read().splitlines()
 
     def part1(self):
+        # test = GridN(self.input, 3)
+        # for i in range(6):
+        #     test.tick()
+        # print(test.count_active())
+
         state = Grid1(self.input)
         for i in range(6):
             state.tick()
         return state.count_active()
 
     def part2(self):
+        # test = GridN(self.input, 4)
+        # for i in range(6):
+        #     test.tick()
+        # return test.count_active()
+
         state = Grid2(self.input)
         for i in range(6):
             state.tick()
