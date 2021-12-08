@@ -2,7 +2,7 @@ import os.path as path
 from importlib import import_module
 import timeit
 
-MAX_RUNS = 10_000
+MAX_RUNS = 100_000
 MIN_RUNS = 10
 TIME_GOAL = 20 * 1000
 
