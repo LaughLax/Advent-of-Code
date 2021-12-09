@@ -15,18 +15,23 @@ class Cell:
         self.x = x
         self.y = y
         self.grid = grid
+        self.neighbors = []
+
+    def get_neighbors(self):
+        if len(self.neighbors) > 0:
+            return self.neighbors
+
+        for dir in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+            x, y = self.x+dir[0], self.y+dir[1]
+            n = self.grid.grid.get((x, y))
+            if n is not None:
+                self.neighbors.append(n)
+        return self.neighbors
 
     def is_low_point(self):
-        for dx in (-1, 0, 1):
-            for dy in (-1, 0, 1):
-                if ((dx == 0 and dy == 0)
-                        or dx != 0 and dy != 0):
-                    continue
-                x, y, = self.x+dx, self.y+dy
-
-                neighbor = self.grid.grid.get((x, y))
-                if (neighbor is not None) and (neighbor.depth <= self.depth):
-                    return False
+        for n in self.get_neighbors():
+            if n.depth <= self.depth:
+                return False
         return True
 
     def explore_basin(self, so_far):
@@ -34,17 +39,10 @@ class Cell:
             return frozenset()
         else:
             so_far |= frozenset([self])
-            for dx in (-1, 0, 1):
-                for dy in (-1, 0, 1):
-                    if ((dx == 0 and dy == 0)
-                            or dx != 0 and dy != 0):
-                        continue
-                    x, y, = self.x + dx, self.y + dy
-
-                    neighbor = self.grid.grid.get((x, y))
-                    if (neighbor is None) or (neighbor.depth == 9) or (neighbor in so_far):
-                        continue
-                    so_far |= neighbor.explore_basin(so_far)
+            for n in self.get_neighbors():
+                if n.depth == 9 or n in so_far:
+                    continue
+                so_far |= n.explore_basin(so_far)
             return so_far
 
 
@@ -66,14 +64,9 @@ class AdventOfCode:
         state = Grid(self.input)
         in_a_basin = frozenset()
         basins = []
-        pos = set(state.grid.keys())
-        min_x = min([x[0] for x in pos])
-        max_x = max([x[0] for x in pos])
-        min_y = min([x[1] for x in pos])
-        max_y = max([x[1] for x in pos])
-        for y in range(min_y, max_y + 1):
-            for x in range(min_x, max_x + 1):
-                if (x, y) in state.grid and state.grid[(x, y)] not in in_a_basin:
+        for y in range(len(self.input)):
+            for x in range(len(self.input[0])):
+                if state.grid[(x, y)] not in in_a_basin:
                     basin = state.grid[(x, y)].explore_basin(frozenset())
                     basins.append(len(basin))
                     in_a_basin |= basin
