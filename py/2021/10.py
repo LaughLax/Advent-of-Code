@@ -9,7 +9,6 @@ class AdventOfCode:
             self.input = f.read().splitlines()
 
     def part1(self):
-        lines = self.input.copy()
         pair = re.compile(r'\{\}|<>|\[\]|\(\)')
         openers = re.compile(r'\{|<|\[|\(')
         total = 0
@@ -19,7 +18,7 @@ class AdventOfCode:
             '}': 1197,
             '>': 25137
         }
-        for line in lines:
+        for line in self.input:
             while True:
                 if ('()' not in line
                         and '[]' not in line
@@ -33,7 +32,6 @@ class AdventOfCode:
         return total
 
     def part2(self):
-        lines = self.input.copy()
         pair = re.compile(r'\{\}|<>|\[\]|\(\)')
         all_scores = []
         scores = {
@@ -42,7 +40,7 @@ class AdventOfCode:
             '{': 3,
             '<': 4
         }
-        for line in lines:
+        for line in self.input:
             score = 0
             while True:
                 if ('()' not in line

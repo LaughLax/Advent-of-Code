@@ -17,6 +17,7 @@ Sometimes this has meant finding a more elegant way to solve the problem, and so
 
 |Day|Part 1 Time|Part 1 Rank|Part 2 Time|Part 2 Rank|
 |---:|---:|:---:|---:|:---:|
+|10|11:33|2040|18:37|1523|
 |09|20:54|4889|36:33|2591|
 |08|7:13|820|36:13|675|
 |07|51:47|12051|1:01:14|11167|
