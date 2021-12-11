@@ -86,4 +86,7 @@ for year in sorted(to_run, reverse=True):
 
             f.write(f"`{(t0+t1+t2):.3f} ms`|\n")
 
+    with open(output_file, 'a') as f:
+        f.write('\n')
+
 print(f'Total (benchmarked) time: {(t_total/1000):.3f}s')
