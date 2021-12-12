@@ -1,7 +1,7 @@
 import networkx as nx
 
 
-class Tree1:
+class Tree:
 
     def __init__(self, graph, current_node, parent=None):
         self.G = graph
@@ -18,71 +18,6 @@ class Tree1:
             if p.parent is None:
                 break
             p = p.parent
-
-    def explore(self):
-        if self.node == 'end':
-            return
-        for n in self.G.neighbors(self.node):
-            if n in self.path_so_far and n.lower() == n:
-                continue
-            Tree1(self.G, n, self).explore()
-
-    def num_children(self):
-        if len(self.children) == 0 and self.node == 'end':
-            return 1
-        else:
-            return sum(c.num_children() for c in self.children)
-
-    def paths(self):
-        if len(self.children) == 0:
-            n = self
-            path = []
-            while True:
-                path.append(n.node)
-                if n.parent is None:
-                    break
-                n = n.parent
-            return [path[::-1]]
-        else:
-            paths = []
-            for c in self.children:
-                paths.extend(c.paths())
-            return paths
-
-
-class Tree2:
-
-    def __init__(self, graph, current_node, parent=None):
-        self.G = graph
-        self.node = current_node
-        self.parent = parent
-        self.children = []
-        if parent is not None:
-            parent.children.append(self)
-
-        p = self
-        self.path_so_far = []
-        while True:
-            self.path_so_far.append(p.node)
-            if p.parent is None:
-                break
-            p = p.parent
-
-    def explore(self, doubled=False):
-        if self.node == 'end':
-            return
-        for n in self.G.neighbors(self.node):
-            if n == 'start':
-                continue
-            if n in self.path_so_far and n.lower() == n:
-                if self.path_so_far.count(n) > 1:
-                    continue
-                elif doubled:
-                    continue
-                else:
-                    Tree2(self.G, n, self).explore(True)
-            else:
-                Tree2(self.G, n, self).explore(doubled)
 
     def num_children(self):
         if len(self.children) == 0 and self.node == 'end':
@@ -107,6 +42,36 @@ class Tree2:
             for c in self.children:
                 paths.extend(c.paths())
             return paths
+
+
+class Tree1(Tree):
+
+    def explore(self):
+        if self.node == 'end':
+            return
+        for n in self.G.neighbors(self.node):
+            if n in self.path_so_far and n.lower() == n:
+                continue
+            Tree1(self.G, n, self).explore()
+
+
+class Tree2(Tree):
+
+    def explore(self, doubled=False):
+        if self.node == 'end':
+            return
+        for n in self.G.neighbors(self.node):
+            if n == 'start':
+                continue
+            if n in self.path_so_far and n.lower() == n:
+                if self.path_so_far.count(n) > 1:
+                    continue
+                elif doubled:
+                    continue
+                else:
+                    Tree2(self.G, n, self).explore(True)
+            else:
+                Tree2(self.G, n, self).explore(doubled)
 
 
 class AdventOfCode:
