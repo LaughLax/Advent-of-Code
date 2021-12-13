@@ -2,6 +2,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def fold(pts, axis, line):
+    result = set()
+    for pt in pts:
+        if axis == 'x' and pt[0] > line:
+            result.add((2 * line - pt[0], pt[1]))
+        elif axis == 'y' and pt[1] > line:
+            result.add((pt[0], 2 * line - pt[1]))
+        else:
+            result.add(pt)
+    return result
+
+
 def show_thing(my_set):
     max_x = max(p[0] for p in my_set)
     max_y = max(p[1] for p in my_set)
@@ -29,37 +41,11 @@ class AdventOfCode:
             self.folds.append((line[11], int(line[13:])))
 
     def part1(self):
-        new_pts = set()
-        f = self.folds[0][1]
-        for pt in self.pts:
-            if self.folds[0][0] == 'x':
-                if pt[0] > f:
-                    new_pts.add((2 * f - pt[0], pt[1]))
-                else:
-                    new_pts.add(pt)
-            elif self.folds[0][0] == 'y':
-                if pt[1] > f:
-                    new_pts.add((pt[0], 2 * f - pt[1]))
-                else:
-                    new_pts.add(pt)
-        return len(new_pts)
+        return len(fold(self.pts, self.folds[0][0], self.folds[0][1]))
 
     def part2(self):
         pts = self.pts.copy()
-        for fold in self.folds:
-            new_pts = set()
-            f = fold[1]
-            for pt in pts:
-                if fold[0][0] == 'x':
-                    if pt[0] > f:
-                        new_pts.add((2 * f - pt[0], pt[1]))
-                    else:
-                        new_pts.add(pt)
-                elif fold[0][0] == 'y':
-                    if pt[1] > f:
-                        new_pts.add((pt[0], 2 * f - pt[1]))
-                    else:
-                        new_pts.add(pt)
-            pts = new_pts
+        for f in self.folds:
+            pts = fold(pts, f[0], f[1])
         show_thing(pts)
         return
