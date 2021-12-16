@@ -42,6 +42,8 @@ class AdventOfCode:
         states_to_examine = [(0, (0, 0))]
         heapq.heapify(states_to_examine)
 
+        space = [[None for _ in range(self.w*5)] for _ in range(self.h*5)]
+
         while True:
             cdist, xy = heapq.heappop(states_to_examine)
             x, y = xy
@@ -56,10 +58,11 @@ class AdventOfCode:
                     continue
                 x1 = x + dir[0]
                 y1 = y + dir[1]
-                dist = (self.input[y1 % self.h][x1 % self.w]
-                        + 1*(y1//self.h)
-                        + 1*(x1//self.w) - 1) % 9 + 1
-                next_dist = cdist + dist
+                if space[y1][x1] is None:
+                    space[y1][x1] = (self.input[y1 % self.h][x1 % self.w]
+                                     + y1//self.h
+                                     + x1//self.w - 1) % 9 + 1
+                next_dist = cdist + space[y1][x1]
                 if (x1, y1) not in memo or next_dist < memo[(x1, y1)]:
                     memo[(x1, y1)] = next_dist
                     heapq.heappush(states_to_examine, (next_dist, (x1, y1)))
