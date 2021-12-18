@@ -58,7 +58,9 @@ class SnailNum:
         for n in o_copy.nums:
             n.depth += 1
 
-        tot = SnailNum(f'{s_copy},{o_copy}')
+        tot = SnailNum('')
+        tot.nums = s_copy.nums
+        tot.nums.extend(o_copy.nums)
         tot.reduce()
         return tot
 
